@@ -56,3 +56,6 @@ nunit-*.xml
 .idea/
 
 node_modules/
+
+**/uSync/**/Content
+**/uSync/**/Media
