@@ -1,3 +1,6 @@
+using svconcat_web.Extensions.Controllers;
+using Umbraco.Cms.Web.Website.Controllers;
+
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.CreateUmbracoBuilder()
@@ -5,6 +8,9 @@ builder.CreateUmbracoBuilder()
     .AddWebsite()
     .AddComposers()
     .Build();
+
+// Configure Umbraco Render Controller Type
+builder.Services.Configure<UmbracoRenderingDefaultsOptions>(options => options.DefaultControllerType = typeof(DefaultController));
 
 WebApplication app = builder.Build();
 

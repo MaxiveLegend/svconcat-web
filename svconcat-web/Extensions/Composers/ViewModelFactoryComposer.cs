@@ -5,6 +5,7 @@ using Umbraco.Cms.Core.Composing;
 
 namespace svconcat_web.Extensions.Composers;
 
+[ComposeBefore(typeof(AddServicesComposer))]
 public class ViewModelFactoryComposer : IComposer
 {
     public void Compose(IUmbracoBuilder builder)
