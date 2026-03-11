@@ -2,12 +2,10 @@
 @{
     if (Model?.Any() != true) { return; }
 }
-<div class="umb-block-list">
-    @foreach (var block in Model)
-    {
-        if (block?.ContentKey == null) { continue; }
-        var data = block.Content;
 
-        @await Html.PartialAsync("blocklist/Components/" + data.ContentType.Alias, block)
-    }
-</div>
+@foreach (var block in Model)
+{
+    if (block?.ContentKey == null) { continue; }
+
+    @await Component.InvokeAsync(block.Content.ContentType.Alias.ToFirstUpper(), block);
+}
