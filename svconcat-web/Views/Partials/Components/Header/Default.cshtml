@@ -1,0 +1,10 @@
+@using svconcat_web.Extensions.ViewModels
+@inherits UmbracoViewPage<svconcat_web.Extensions.ViewModels.Common.HeaderViewModel>
+
+<header>
+    @Model.WebsiteUrl
+    @foreach (var navItem in Model.MainNavItems)
+    {
+        @navItem
+    }
+</header>
