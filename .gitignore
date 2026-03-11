@@ -54,6 +54,7 @@ TestResult.xml
 nunit-*.xml
 
 .idea/
+**/*.DotSettings.user
 
 node_modules/
 
