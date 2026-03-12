@@ -58,5 +58,6 @@ nunit-*.xml
 
 node_modules/
 
+**/wwwroot/dist/
 **/uSync/**/Content
 **/uSync/**/Media

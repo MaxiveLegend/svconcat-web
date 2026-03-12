@@ -1,0 +1,17 @@
+{
+  "extends": ["stylelint-config-standard-scss"],
+  "plugins": ["stylelint-order"],
+  "defaultSeverity": "warning",
+  "extends": [
+    "stylelint-config-standard-scss"
+  ],
+  "rules": {
+    "selector-class-pattern": null,
+    "no-descending-specificity": null,
+    "at-rule-empty-line-before": null,
+    "scss/no-global-function-names": null,
+    "scss/dollar-variable-empty-line-before": null,
+    "scss/operator-no-newline-after": null,
+    "custom-property-empty-line-before": null
+  }
+}
