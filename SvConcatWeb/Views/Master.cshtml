@@ -1,0 +1,24 @@
+@inherits UmbracoViewPage<SvConcatWeb.Extensions.Models.IMasterModel>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="nl">
+<head>
+    <title>@Model.SeoTitle | @Model.SeoSiteName</title>
+</head>
+<body>
+
+@await Component.InvokeAsync("Header", new { model = Model })
+
+<main>
+    @RenderBody()
+</main>
+
+@await Component.InvokeAsync("Footer", new { model = Model })
+
+</body>
+</html>

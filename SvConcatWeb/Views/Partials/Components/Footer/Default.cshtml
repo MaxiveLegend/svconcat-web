@@ -1,0 +1,13 @@
+@using SvConcatWeb.Extensions.ViewModels.Common.Footer
+@inherits UmbracoViewPage<FooterViewModel>
+
+<header>
+    @foreach (var column in Model.Columns)
+    {
+        @column.ColumnName
+        foreach (var item in column.items)
+        {
+            @(!string.IsNullOrEmpty(item.Text) ? item.Text : item.Link.Name)
+        }
+    }
+</header>

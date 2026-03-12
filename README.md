@@ -1,2 +1,2 @@
-# svconcat-web
+# SvConcatWeb
 Studievereniging concat website V3
