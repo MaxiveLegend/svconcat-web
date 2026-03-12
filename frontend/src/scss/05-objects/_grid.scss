@@ -1,0 +1,159 @@
+@use '../01-settings/variables' as *;
+@use '../02-tools/media-queries' as mq;
+
+// Grid settings
+$grid-column-count: 12;
+$grid-gutter-width: 32px;
+$grid-gutter-width-large: 48px;
+
+// Responsive outer spacing
+$grid-outer-spacing-mobile: 20px;
+$grid-outer-spacing-tablet: 40px;
+$grid-outer-spacing-desktop: 48px;
+$grid-outer-spacing-large-desktop: 64px;
+
+// Mixin for creating the grid container
+@mixin grid-container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: $grid-outer-spacing-mobile;
+  padding-right: $grid-outer-spacing-mobile;
+
+  @include mq.media-breakpoint-up(tablet) {
+    padding-left: $grid-outer-spacing-tablet;
+    padding-right: $grid-outer-spacing-tablet;
+  }
+
+  @include mq.media-breakpoint-up(desktop) {
+    padding-left: $grid-outer-spacing-desktop;
+    padding-right: $grid-outer-spacing-desktop;
+  }
+
+  @include mq.media-breakpoint-up(desktop-large) {
+    max-width: calc(
+            #{$container-width-desktop} +
+            (2 * #{$grid-outer-spacing-large-desktop})
+    );
+    padding-left: $grid-outer-spacing-large-desktop;
+    padding-right: $grid-outer-spacing-large-desktop;
+  }
+
+  @include mq.media-breakpoint-up(wide) {
+    max-width: calc(
+            #{$container-width-extra-large-desktop} +
+            (2 * #{$grid-outer-spacing-large-desktop})
+    );
+  }
+}
+
+// Mixin for creating grid columns
+@mixin grid-columns {
+  display: grid;
+  grid-template-columns: repeat($grid-column-count, 1fr);
+  gap: $grid-gutter-width-large $grid-gutter-width;
+
+  @include mq.media-breakpoint-up(tablet) {
+    column-gap: $grid-gutter-width-large;
+  }
+}
+
+// Basic grid classes
+.container {
+  @include grid-container;
+}
+
+.row {
+  @include grid-columns;
+}
+
+.row--gap-small {
+  gap: $grid-gutter-width;
+
+  @include mq.media-breakpoint-up(tablet) {
+    gap: $grid-gutter-width-large;
+  }
+}
+
+.col-center {
+  display: grid;
+  justify-content: center;
+}
+
+.col-md-center {
+  @include mq.media-breakpoint-up(tablet) {
+    display: grid;
+    justify-content: center;
+  }
+}
+
+.col-inline-end {
+  display: grid;
+  justify-content: flex-end;
+}
+
+// Column span classes
+@for $i from 1 through $grid-column-count {
+  .col-#{$i} {
+    grid-column-end: span $i;
+  }
+}
+
+// Offset classes
+@for $i from 1 through ($grid-column-count - 1) {
+  .offset-#{$i} {
+    grid-column-start: $i + 1;
+  }
+}
+
+// Responsive column span classes (example for medium breakpoint)
+// You can extend this for other breakpoints (sm, lg, xl) as needed.
+@include mq.media-breakpoint-up(tablet) {
+  @for $i from 1 through $grid-column-count {
+    .col-md-#{$i} {
+      grid-column-end: span $i;
+    }
+  }
+
+  @for $i from 1 through ($grid-column-count - 1) {
+    .offset-md-#{$i} {
+      grid-column-start: $i + 1;
+    }
+  }
+}
+
+@include mq.media-breakpoint-up(desktop) {
+  @for $i from 1 through $grid-column-count {
+    .col-lg-#{$i} {
+      grid-column-end: span $i;
+    }
+  }
+
+  @for $i from 1 through ($grid-column-count - 1) {
+    .offset-lg-#{$i} {
+      grid-column-start: $i + 1;
+    }
+  }
+}
+
+// Ensure specific column behavior at 1440px
+@include mq.media-breakpoint-up(desktop-large) {
+  .row {
+    // For 1440px, the container is 1312px wide.
+    // Gutter is 32px.
+    // Individual column width should be 80px.
+    // (1312px - (11 * 32px)) / 12 = (1312 - 352) / 12 = 960 / 12 = 80px
+    grid-template-columns: repeat($grid-column-count, minmax(0, 80px));
+  }
+}
+
+// For screens larger than 1728px, allow columns to grow up to the 1600px container width
+@include mq.media-breakpoint-up(wide) {
+  .row {
+    // The container max-width is 1600px. Gutters are 32px.
+    // (1600px - (11 * 32px)) / 12 = (1600 - 352) / 12 = 1248 / 12 = 104px
+    // So each column can grow up to 104px.
+    // We use 1fr to allow them to take up available space within the 1600px container.
+    grid-template-columns: repeat($grid-column-count, 1fr);
+  }
+}

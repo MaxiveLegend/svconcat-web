@@ -1,0 +1,11 @@
+@use '../01-settings/typography' as typography;
+
+input, textarea, select {
+  display: flex;
+  align-items: center;
+  background-color: var(--color-light);
+  border: 1px solid var(--color-bg-dark);
+  border-radius: var(--border-radius);
+  line-height: typography.$line-height-extra-large;
+  padding: 12px 20px;
+}

@@ -1,0 +1,26 @@
+@use '../02-tools/media-queries' as mq;
+
+$scroll-margin-offset: 3rem;
+
+.o-section {
+  scroll-margin-block-start: calc(
+          var(--header-height) + $scroll-margin-offset
+  );
+  scroll-margin-top: calc(var(--header-height) + $scroll-margin-offset);
+
+  & + & {
+    margin-block-start: 68px;
+
+    @include mq.media-breakpoint-up(tablet) {
+      margin-block-start: 120px;
+    }
+  }
+
+  &:last-child {
+    margin-block-end: 68px;
+
+    @include mq.media-breakpoint-up(tablet) {
+      margin-block-end: 120px;
+    }
+  }
+}

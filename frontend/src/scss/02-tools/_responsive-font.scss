@@ -1,0 +1,15 @@
+@use 'sass:map';
+@use '../01-settings/typography' as typography;
+@use '../02-tools/media-queries' as mq;
+
+@mixin responsive-font($size-map) {
+  font-size: map.get($size-map, mobile);
+  
+  @include mq.media-breakpoint-up(tablet) {
+    font-size: map.get($size-map, tablet);
+  }
+  
+  @include mq.media-breakpoint-up(desktop) {
+    font-size: map.get($size-map, desktop);
+  }
+}

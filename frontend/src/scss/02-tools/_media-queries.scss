@@ -1,0 +1,38 @@
+@use '../01-settings/breakpoints' as *;
+
+@function breakpoint-value($name) {
+  @if $name == tablet {
+    @return $breakpoint-tablet;
+  } @else if $name == desktop {
+    @return $breakpoint-desktop;
+  } @else if $name == desktop-large {
+    @return $breakpoint-desktop-large;
+  } @else if $name == wide {
+    @return $breakpoint-wide;
+  } @else {
+    // Allow direct passing of pixel values
+    @if type-of($name) == number and unit($name) == 'px' {
+      @return $name;
+    }
+    @warn "Breakpoint `#{$name}` is invalid.";
+    @return null;
+  }
+}
+
+@mixin media-breakpoint-up($name) {
+  $breakpoint: breakpoint-value($name);
+  @if $breakpoint {
+    @media (min-width: #{$breakpoint}) {
+      @content;
+    }
+  }
+}
+
+@mixin media-breakpoint-down($name) {
+  $breakpoint: breakpoint-value($name);
+  @if $breakpoint {
+    @media (max-width: #{$breakpoint  0.02px}) { // small adjustment to prevent overlap with min-width queries
+      @content;
+    }
+  }
+}

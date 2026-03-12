@@ -1,0 +1,55 @@
+// Font sizes
+$font-extra-small: 16px;
+$font-small: 18px;
+$font-medium: 20px;
+$font-base: 22px;
+$font-large: 24px;
+$font-extra-large: 26px;
+
+// Heading sizes
+$font-heading-1: 60px;
+$font-heading-2: 42px;
+$font-heading-3: 38px;
+$font-heading-4: 34px;
+$font-heading-5: 30px;
+$font-heading-6: 26px;
+
+$font-heading-mb-1: 48px;
+$font-heading-mb-2: 36px;
+$font-heading-mb-3: 32px;
+$font-heading-mb-4: 28px;
+$font-heading-mb-5: 24px;
+$font-heading-mb-6: 20px;
+
+// Line height
+$line-height-base: 1.25;
+$line-height-extra-large: 2;
+
+// Font weight
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+
+// Body font sizes
+$body-font-sizes: (
+  sm: (
+    desktop: $font-medium,
+    tablet: $font-small,
+    mobile: $font-small,
+  ),
+  md: (
+    desktop: $font-base,
+    tablet: $font-medium,
+    mobile: $font-medium,
+  ),
+  lg: (
+    desktop: $font-large,
+    tablet: $font-base,
+    mobile: $font-base,
+  )
+);
+
+:root {
+  --font-family: 'quicksand', sans-serif; // Google font, imported in site's html head
+}

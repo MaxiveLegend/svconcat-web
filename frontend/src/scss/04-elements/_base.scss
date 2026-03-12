@@ -1,0 +1,75 @@
+@use 'sass:map';
+@use '../01-settings/typography' as typography;
+@use '../02-tools/responsive-font' as responsive-font;
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
+
+html {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-variant-ligatures: common-ligatures;
+  text-rendering: optimizelegibility;
+}
+
+body {
+  color: var(--color-dark);
+  background-color: var(--color-bg-light);
+  font-family: var(--font-family);
+  line-height: typography.$line-height-base;
+  position: relative;
+  
+  @include responsive-font.responsive-font(
+    map.get(typography.$body-font-sizes, md)
+  )
+}
+
+main {
+  display: grid;
+  padding-block-end: var(--footer-height);
+  position: relative;
+  overflow: hidden;
+}
+
+a {
+  color: var(--color-secondary);
+  
+  &:active,
+  &:hover,
+  &:focus{
+    color: var(--color-secondary-dark);
+  }
+  
+  &focus-visible {
+    outline: 2px solid var(--color-secondary-dark);
+  }
+  
+  &:visited {
+    color: var(--color-dark);
+  }
+  
+  &:disabled {
+    color: var(--color-bg-dark);
+  }
+}
+
+.body--sm {
+  @include responsive-font.responsive-font(
+    map.get(typography.$body-font-sizes, sm)
+  );
+}
+
+.body--md {
+  @include responsive-font.responsive-font(
+    map.get(typography.$body-font-sizes, md)
+  );
+}
+
+.body--lg {
+  @include responsive-font.responsive-font(
+    map.get(typography.$body-font-sizes, lg)
+  );
+}

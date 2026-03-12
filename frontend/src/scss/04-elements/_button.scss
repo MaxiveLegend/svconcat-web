@@ -1,0 +1,11 @@
+button:not(.c-button) {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  
+  &:focus {
+    outline: 2px solid var(--color-secondary-dark);
+  }
+}

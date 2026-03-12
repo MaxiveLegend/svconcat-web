@@ -1,0 +1,18 @@
+// Containers
+$container-width-mobile: 100%;
+$container-width-desktop: 1312px;
+$container-width-extra-large-desktop: 1600px;
+$container-width-desktop: 1920px;
+
+// radius
+$corner-radius: 20px;
+
+:root {
+  --border-radius: $corner-radius;
+  
+  --header-height: 12rem;
+  --footer-height: 8.5rem;
+  
+  --transition-duration: 0.3s;
+  --transition-ease: ease-in-out;
+}
