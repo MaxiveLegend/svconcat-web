@@ -1,13 +1,48 @@
 @using SvConcatWeb.Extensions.ViewModels.Common.Footer
 @inherits UmbracoViewPage<FooterViewModel>
 
-<header>
-    @foreach (var column in Model.Columns)
-    {
-        @column.ColumnName
-        foreach (var item in column.items)
+<footer class="c-footer">
+    <div class="c-footer__columns">
+        
+        @foreach (var column in Model.Columns)
         {
-            @(!string.IsNullOrEmpty(item.Text) ? item.Text : item.Link.Name)
+            <div class="c-footer__column">
+                <h3 class="c-footer__column__title">@column.ColumnName</h3>
+
+                @foreach (var item in column.items)
+                {
+                    <div class="c-footer__column__item__container">
+
+                        @if (item.HasIcon)
+                        {
+                            <img src="@item.Icon.Url" alt="@item.Icon.Alt" width="18" height="18"/>
+                        }
+
+                        @if (item.HasLink)
+                        {
+                            <a class="c-footer__column__item" href="@item.Link.Url" target="@item.Link.Target">
+                                @(item.HasText ? item.Text : item.Link.Name)
+                            </a>
+                        }
+                        else
+                        {
+                            <p class="c-footer__column__item">
+                                @* <div class="c-footer__column__item__image-container"> *@
+                                @*     @if (item.HasIcon) *@
+                                @*     { *@
+                                @*         <img src="@item.Icon.Url" alt="@item.Icon.Alt" width="18" height="18"/> *@
+                                @*     } *@
+                                @* </div> *@
+
+                                @item.Text
+                            </p>
+                        }
+
+                    </div>
+                }
+
+            </div>
         }
-    }
-</header>
+
+    </div>
+</footer>

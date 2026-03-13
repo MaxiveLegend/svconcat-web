@@ -1,0 +1,60 @@
+@use '../01-settings/typography' as *;
+
+.c-footer {
+  background-color: var(--color-primary);
+  height: var(--footer-height);
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  
+  &__columns {
+    display: flex;
+    gap: 8rem;
+  }
+  
+  &__column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    
+    &__title {
+      color: var(--color-light);
+      font-size: $font-large;
+    }
+    
+    &__item__container {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    &__item {
+      color: var(--color-light);
+      text-decoration: none;
+      margin: 0;
+      font-size: $font-small;
+      
+      &__image-container {
+        width: 18px;
+        height: 18px;
+      }
+      
+      &:is(a:visited) {
+        color: var(--color-light);
+      }
+      
+      &:is(a:hover),
+      &:is(a:focus) {
+        color: var(--color-secondary);
+      }
+      
+      &:is(a:active) {
+        color: var(--color-secondary-dark);
+      }
+    }
+  }
+}
