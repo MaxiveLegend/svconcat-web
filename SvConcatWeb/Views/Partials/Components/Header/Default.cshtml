@@ -1,10 +1,9 @@
-@using SvConcatWeb.Extensions.Utilities
 @using SvConcatWeb.Extensions.ViewModels.Common
 @inherits UmbracoViewPage<HeaderViewModel>
 
 <header class="c-header">
-    <nav class="c-header__nav">
-        <a href="@Model.WebsiteUrl">
+    <nav class="c-header__nav row">
+        <a class="c-header__nav__group col-3" href="@Model.WebsiteUrl">
             <picture>
                 @foreach (var source in Model.WebsiteLogo.Sources)
                 {
@@ -15,7 +14,7 @@
             </picture>
         </a>
         
-        <div class="c-header__nav__group">
+        <div class="c-header__nav__group c-header__nav__group--main col-6">
             @foreach (var navItem in Model.MainNavItems)
             {
                 var currentUrl = Model.CurrentPage.Url().ToLower().TrimEnd('/');
@@ -29,7 +28,7 @@
             }
         </div>
         
-        <div class="c-header__nav__group">
+        <div class="c-header__nav__group c-header__nav__group--secondary col-3">
             @foreach (var externalLink in Model.ExternalLinks)
             {
                 <a class="c-header__nav__link" href="@externalLink.Url" target="@externalLink.Target">@externalLink.Name</a>
