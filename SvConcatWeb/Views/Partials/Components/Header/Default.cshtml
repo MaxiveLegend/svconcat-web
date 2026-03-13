@@ -1,11 +1,39 @@
+@using SvConcatWeb.Extensions.Utilities
 @using SvConcatWeb.Extensions.ViewModels.Common
 @inherits UmbracoViewPage<HeaderViewModel>
 
-<header>
-    @Model.WebsiteUrl
-    <br/>
-    @foreach (var navItem in Model.MainNavItems)
-    {
-        @navItem.Name
-    }
+<header class="c-header">
+    <nav class="c-header__nav">
+        <a href="@Model.WebsiteUrl">
+            <picture>
+                @foreach (var source in Model.WebsiteLogo.Sources)
+                {
+                    <source srcset="@source.Src" media="@source.MediaQuery"/>
+                }
+                <img src="@Model.WebsiteLogo.Url" alt="@Model.WebsiteLogo.Alt"
+                     width="192" height="52"/>
+            </picture>
+        </a>
+        
+        <div class="c-header__nav__group">
+            @foreach (var navItem in Model.MainNavItems)
+            {
+                var currentUrl = Model.CurrentPage.Url().ToLower().TrimEnd('/');
+                var linkUrl = navItem.Url?.ToLower().TrimEnd('/');
+                
+                <a class="c-header__nav__link @Html.If(currentUrl.Equals(linkUrl), "c-header__nav__link--active")"
+                   href="@navItem.Url"
+                   target="@navItem.Target">
+                    @navItem.Name
+                </a>
+            }
+        </div>
+        
+        <div class="c-header__nav__group">
+            @foreach (var externalLink in Model.ExternalLinks)
+            {
+                <a class="c-header__nav__link" href="@externalLink.Url" target="@externalLink.Target">@externalLink.Name</a>
+            }
+        </div>
+    </nav>
 </header>

@@ -20,8 +20,8 @@ public class ModelService(IUmbracoContextAccessor umbracoContextAccessor, IVaria
 
         var website = content.Website();
         model.Website = website;
-        
-        var isHome = isHomeNode(content, website);
+
+        var isHome = content.IsHomeNode(website);
 
         if (content is ISeo seoPage)
         {
@@ -50,20 +50,20 @@ public class ModelService(IUmbracoContextAccessor umbracoContextAccessor, IVaria
         return model;
     }
     
-    private bool isHomeNode(IPublishedContent content, Website website)
-    {
-        var redirectValue = website.GetProperty("umbracoInternalRedirectId")?.GetValue();
-        int? redirectId = null;
-
-        var contentCache = umbracoContextAccessor.GetRequiredUmbracoContext().Content;
-
-        redirectId = redirectValue switch
-        {
-            Guid guid => contentCache.GetById(guid)?.Id,
-            GuidUdi guidUdi => contentCache.GetById(guidUdi.Guid)?.Id,
-            _ => redirectId
-        };
-
-        return content.Id == redirectId || content.Id == website.Id;
-    }
+    // private bool isHomeNode(IPublishedContent content, Website website)
+    // {
+    //     var redirectValue = website.GetProperty("umbracoInternalRedirectId")?.GetValue();
+    //     int? redirectId = null;
+    //
+    //     var contentCache = umbracoContextAccessor.GetRequiredUmbracoContext().Content;
+    //
+    //     redirectId = redirectValue switch
+    //     {
+    //         Guid guid => contentCache.GetById(guid)?.Id,
+    //         GuidUdi guidUdi => contentCache.GetById(guidUdi.Guid)?.Id,
+    //         _ => redirectId
+    //     };
+    //
+    //     return content.Id == redirectId || content.Id == website.Id;
+    // }
 }

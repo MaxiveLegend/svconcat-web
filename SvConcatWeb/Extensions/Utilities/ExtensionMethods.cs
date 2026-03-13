@@ -1,7 +1,9 @@
 using SvConcatWeb.Extensions.Models.Custom;
 using SvConcatWeb.Extensions.ViewModels.Common;
+using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.PublishedContent;
+using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Web.Common.PublishedModels;
 
 namespace SvConcatWeb.Extensions.Utilities;
@@ -14,6 +16,24 @@ public static class ExtensionMethods
     public static Website Website(this IPublishedContent content)
     {
         return content.AncestorOrSelf(1) as Website;
+    }
+    
+    public static bool IsHomeNode(this IPublishedContent content, Website website)
+    {
+        var redirectValue = website.GetProperty("umbracoInternalRedirectId")?.GetValue();
+        int? redirectId = null;
+
+        var umbracoContextAccessor = StaticServiceProvider.Instance.GetRequiredService<IUmbracoContextAccessor>();
+        var contentCache = umbracoContextAccessor.GetRequiredUmbracoContext().Content;
+
+        redirectId = redirectValue switch
+        {
+            Guid guid => contentCache.GetById(guid)?.Id,
+            GuidUdi guidUdi => contentCache.GetById(guidUdi.Guid)?.Id,
+            _ => redirectId
+        };
+
+        return content.Id == redirectId || content.Id == website.Id;
     }
 
     #endregion
