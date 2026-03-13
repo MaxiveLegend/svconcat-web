@@ -4,13 +4,11 @@ $container-width-desktop: 1312px;
 $container-width-extra-large-desktop: 1600px;
 $container-width-desktop: 1920px;
 
-// radius
-$corner-radius: 20px;
 
 :root {
-  --border-radius: $corner-radius;
+  --border-radius: 20px;
   
-  --header-height: 12rem;
+  --header-height: 5rem;
   --footer-height: 8.5rem;
   
   --transition-duration: 0.3s;

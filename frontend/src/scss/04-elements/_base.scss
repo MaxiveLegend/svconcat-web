@@ -21,6 +21,7 @@ body {
   font-family: var(--font-family);
   line-height: typography.$line-height-base;
   position: relative;
+  margin: 0;
   
   @include responsive-font.responsive-font(
     map.get(typography.$body-font-sizes, md)
