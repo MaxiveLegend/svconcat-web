@@ -1,17 +1,17 @@
 @using SvConcatWeb.Extensions.ViewModels.Blocks
 @inherits UmbracoViewPage<HeroViewModel>
 
-<section class="c-hero">
+<section class="o-section c-hero">
     <picture class="c-hero__media">
-        
+
         @foreach (var source in Model.Image.Sources)
         {
             <source srcset="@source.Src" media="@source.MediaQuery">
         }
-        
+
         <img src="@Model.Image.Url" alt="@Model.Image.Alt" width="100%" height="100%">
     </picture>
-    
+
     <div class="c-hero__body">
         <p class="heading-4">@Model.Subtitle</p>
         <h1 class="c-hero__title">@Model.Title</h1>

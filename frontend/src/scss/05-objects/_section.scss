@@ -12,7 +12,7 @@ $scroll-margin-offset: 3rem;
     margin-block-start: 68px;
 
     @include mq.media-breakpoint-up(tablet) {
-      margin-block-start: 120px;
+      margin-block-start: 96px;
     }
   }
 
@@ -20,7 +20,7 @@ $scroll-margin-offset: 3rem;
     margin-block-end: 68px;
 
     @include mq.media-breakpoint-up(tablet) {
-      margin-block-end: 120px;
+      margin-block-end: 96px;
     }
   }
 }

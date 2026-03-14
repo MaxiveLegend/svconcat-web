@@ -1,6 +1,10 @@
 @using SvConcatWeb.Extensions.ViewModels.Blocks
 @inherits UmbracoViewPage<RteBlockViewModel>
 
-<section>
-    @Model.Content
+<section class="o-section">
+    <div class="container">
+        <div class="c-rte">
+            @Model.Content
+        </div>
+    </div>
 </section>
