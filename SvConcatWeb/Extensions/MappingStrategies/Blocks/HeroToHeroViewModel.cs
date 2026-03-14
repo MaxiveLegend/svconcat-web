@@ -33,7 +33,23 @@ public class HeroToHeroViewModel(IVariationContextAccessor variationContextAcces
             Height = 500
         };
 
+        var sources = new List<PictureSourceItem>
+        {
+            new ()
+            {
+                Width = 768,
+                MediaQuery = "(max-width: 768px)",
+                ResolutionScale = 1
+            },
+            new ()
+            {
+                Width = 1440,
+                MediaQuery = "(max-width: 1440px)",
+                ResolutionScale = 1
+            }
+        };
+
         var culture = variationContextAccessor.VariationContext.Culture;
-        vm.Image = sourceContent.Image.CreateImageItem(mainCrop, culture);
+        vm.Image = sourceContent.Image.CreateImageItem(mainCrop, culture, sources);
     }
 }
