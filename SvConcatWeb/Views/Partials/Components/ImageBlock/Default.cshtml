@@ -1,0 +1,16 @@
+@using SvConcatWeb.Extensions.ViewModels.Blocks
+@inherits UmbracoViewPage<ImageBlockViewModel>
+
+<section class="o-section">
+    <div class="container">
+        <picture class="c-image">
+            
+            @foreach (var source in Model.Image.Sources)
+            {
+                <source srcset="@source.Src" media="@source.MediaQuery">
+            }
+            <img src="@Model.Image.Url" alt="@Model.Image.Alt"/>
+            
+        </picture>
+    </div>
+</section>
