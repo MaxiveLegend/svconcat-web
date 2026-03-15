@@ -1,0 +1,21 @@
+@using SvConcatWeb.Extensions.ViewModels.Common
+@model CardViewModel
+
+<div class="c-card">
+    <picture class="c-card__image">
+
+        @foreach (var source in Model.Image.Sources)
+        {
+            <source srcset="@source.Src" media="@source.MediaQuery">
+        }
+
+        <img src="@Model.Image.Url" alt="@Model.Image.Alt">
+    </picture>
+
+    <h3 class="c-card__title">@Model.Title</h3>
+    <span class="c-card__subtitle">@Model.Subtitle</span>
+    <p class="c-card__description">
+        @Model.Description
+    </p>
+    <a class="c-card__link" href="@Model.Cta.Url" target="@Model.Cta.Target">@Model.Cta.Name</a>
+</div>

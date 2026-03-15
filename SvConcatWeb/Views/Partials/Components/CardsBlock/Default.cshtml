@@ -1,0 +1,39 @@
+@using SvConcatWeb.Extensions.ViewModels.Blocks
+@inherits UmbracoViewPage<CardsBlockViewModel>
+
+<section class="o-section">
+    <div class="container">
+        <div class="c-cards">
+            
+            @if (Model.HasTitle && Model.HasBody)
+            {
+                <div class="row">
+                    <h2 class="c-cards__title col-12 col-md-5">
+                        @Model.Title
+                    </h2>
+                    
+                    <div class="c-card__body col-12 offset-md-8 col-md-4">
+                        
+                        @if (Model.HasText)
+                        {
+                            @Model.Text
+                        }
+                        @if (Model.HasLink)
+                        {
+                            <a class="c-button" href="@Model.Cta.Url" target="@Model.Cta.Target">
+                                @Model.Cta.Name
+                            </a>
+                        }
+                        
+                    </div>
+                </div>
+            }
+            
+            @foreach (var card in Model.Cards)
+            {
+                @await Html.PartialAsync("Components/Subcomponents/Card/Default", card)
+            }
+            
+        </div>
+    </div>
+</section>
