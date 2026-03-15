@@ -11,18 +11,18 @@ namespace SvConcatWeb.Extensions.ViewComponents.Common;
 
 public class HeaderViewComponent(IVariationContextAccessor variationContextAccessor, IViewmodelFactory viewModelFactory) : ViewComponent
 {
-    public IViewComponentResult Invoke(IMasterModel model)
+    public IViewComponentResult Invoke(IMasterModel source)
     {
         var vm = new HeaderViewModel();
 
-        if (model?.Website == null) return View(vm);
+        if (source?.Website == null) return View(vm);
         
-        vm.CurrentPage = model.CurrentPage;
+        vm.CurrentPage = source.CurrentPage;
         vm.MainNavItems =
-            model.Website.MainNavItems.Select(viewModelFactory.CreateViewModel<Link, LinkViewModel>);
-        vm.ExternalLinks = model.Website.ExternalLinks.Select(viewModelFactory.CreateViewModel<Link, LinkViewModel>);
-        vm.WebsiteUrl = model.Website.Url();
-        SetHeaderLogo(vm, model);
+            source.Website.MainNavItems.Select(viewModelFactory.CreateViewModel<Link, LinkViewModel>);
+        vm.ExternalLinks = source.Website.ExternalLinks.Select(viewModelFactory.CreateViewModel<Link, LinkViewModel>);
+        vm.WebsiteUrl = source.Website.Url();
+        SetHeaderLogo(vm, source);
 
         return View(vm);
     }

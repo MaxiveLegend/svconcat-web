@@ -15,13 +15,13 @@
 </head>
 <body>
 
-@await Component.InvokeAsync("Header", new { model = Model })
+@await Component.InvokeAsync("Header", new { source = Model })
 
 <main>
     @RenderBody()
 </main>
 
-@await Component.InvokeAsync("Footer", new { model = Model })
+@await Component.InvokeAsync("Footer", new { source = Model })
 
 </body>
 </html>

@@ -8,13 +8,13 @@ namespace SvConcatWeb.Extensions.ViewComponents.Common;
 
 public class FooterViewComponent(IViewmodelFactory viewmodelFactory) : ViewComponent
 {
-    public IViewComponentResult Invoke(IMasterModel model)
+    public IViewComponentResult Invoke(IMasterModel source)
     {
         var vm = new FooterViewModel();
 
-        if (model?.Website == null) return View(vm);
+        if (source?.Website == null) return View(vm);
 
-        vm.Columns = model.Website.Columns.Select(viewmodelFactory.CreateViewModel<BlockListItem, FooterColumnViewModel>);
+        vm.Columns = source.Website.Columns.Select(viewmodelFactory.CreateViewModel<BlockListItem, FooterColumnViewModel>);
 
         return View(vm);
     }
