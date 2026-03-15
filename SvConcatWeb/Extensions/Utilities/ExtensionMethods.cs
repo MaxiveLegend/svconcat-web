@@ -75,10 +75,10 @@ public static class ExtensionMethods
         return url;
     }
 
-    public static ImageItemViewModel CreateImageItem(this MediaWithCrops mediaItem, MainCropItem mainCrop, string culture,
+    public static ImageViewModel CreateImageItem(this MediaWithCrops mediaItem, MainCropItem mainCrop, string culture,
         IEnumerable<PictureSourceItem> sources = null)
     {
-        var vm = new ImageItemViewModel();
+        var vm = new ImageViewModel();
         if (mediaItem == null || mainCrop == null) return vm;
 
         var pictureSources = new List<PictureSourceViewModel>();
@@ -93,7 +93,7 @@ public static class ExtensionMethods
 
         var altText = mediaItem.AltText();
 
-        return new ImageItemViewModel
+        return new ImageViewModel
         {
             Url = mediaItem.TryGetCropUrl(mainCrop.Width, mainCrop.Height),
             Alt = altText,

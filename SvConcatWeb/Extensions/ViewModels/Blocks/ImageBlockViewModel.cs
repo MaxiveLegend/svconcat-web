@@ -4,5 +4,5 @@ namespace SvConcatWeb.Extensions.ViewModels.Blocks;
 
 public class ImageBlockViewModel
 {
-    public ImageItemViewModel Image { get; set; }
+    public ImageViewModel Image { get; set; }
 }
