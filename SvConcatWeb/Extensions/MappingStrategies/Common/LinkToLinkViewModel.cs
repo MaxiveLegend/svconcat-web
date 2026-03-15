@@ -8,13 +8,14 @@ public class LinkToLinkViewModel : IMappingStrategy<Link, LinkViewModel>
 {
     public LinkViewModel Execute(Link source)
     {
-        if (source == null) return null;
+        var vm = new LinkViewModel();
         
-        return new LinkViewModel()
-        {
-            Url = source?.Url ?? string.Empty,
-            Name = source?.Name ??  string.Empty,
-            Target = source?.Target ?? string.Empty
-        };
+        if (source == null) return vm;
+        
+        vm.Url = source.Url ?? string.Empty;
+        vm.Target = source.Target ?? string.Empty;
+        vm.Name = source.Name ?? string.Empty;
+
+        return vm;
     }
 }
