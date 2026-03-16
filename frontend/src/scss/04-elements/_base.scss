@@ -13,6 +13,7 @@ html {
   -webkit-font-smoothing: antialiased;
   font-variant-ligatures: common-ligatures;
   text-rendering: optimizelegibility;
+  height: 100%;
 }
 
 body {
@@ -22,6 +23,9 @@ body {
   line-height: typography.$line-height-base;
   position: relative;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   
   @include responsive-font.responsive-font(
     map.get(typography.$body-font-sizes, md)
@@ -30,8 +34,8 @@ body {
 
 main {
   display: grid;
-  padding-block-end: var(--footer-height);
   position: relative;
+  flex: 1 0 auto;
 }
 
 a {
