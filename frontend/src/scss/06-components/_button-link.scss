@@ -1,0 +1,17 @@
+@use '../01-settings/typography' as *;
+
+.c-button {
+  text-decoration: none;
+  color: var(--color-light);
+  background-color: var(--color-secondary);
+  font-size: $font-large;
+  border-radius: var(--border-radius);
+  padding: 0.5rem 1rem;
+  width: fit-content;
+  
+  &:hover,
+  &:active {
+    color: var(--color-light);
+    background-color: var(--color-secondary-dark);
+  }
+}
