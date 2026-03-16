@@ -36,10 +36,6 @@
       align-items: center;
       position: relative;
       
-      &:visited {
-        color: var(--color-light);
-      }
-      
       &:hover,
       &:focus{
         color: var(--color-secondary);

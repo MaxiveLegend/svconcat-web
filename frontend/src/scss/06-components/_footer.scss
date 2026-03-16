@@ -43,10 +43,6 @@
         height: 18px;
       }
       
-      &:is(a:visited) {
-        color: var(--color-light);
-      }
-      
       &:is(a:hover),
       &:is(a:focus) {
         color: var(--color-secondary);
