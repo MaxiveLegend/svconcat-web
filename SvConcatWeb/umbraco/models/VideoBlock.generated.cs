@@ -50,6 +50,20 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
+		/// Duration: The amount of seconds the video should play from the start time (choose 0 for no end time)
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.2.2+11a412c")]
+		[ImplementPropertyType("duration")]
+		public virtual int Duration => this.Value<int>(_publishedValueFallback, "duration");
+
+		///<summary>
+		/// Start time: The amount of seconds into the video playback should start (defaults to 0)
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.2.2+11a412c")]
+		[ImplementPropertyType("startTime")]
+		public virtual int StartTime => this.Value<int>(_publishedValueFallback, "startTime");
+
+		///<summary>
 		/// Video: The video to show in this block
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.2.2+11a412c")]
