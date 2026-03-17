@@ -50,7 +50,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
-		/// Duration: The amount of seconds the video should play from the start time (choose 0 for no end time)
+		/// Duration: The amount of seconds the video should play from the start time before automatically pausing (choose 0 for no end time)
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.2.2+11a412c")]
 		[ImplementPropertyType("duration")]
@@ -62,6 +62,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.2.2+11a412c")]
 		[ImplementPropertyType("startTime")]
 		public virtual int StartTime => this.Value<int>(_publishedValueFallback, "startTime");
+
+		///<summary>
+		/// Thumbnail: Optionally provide a custom thumbnail for this video
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.2.2+11a412c")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("thumbnail")]
+		public virtual global::Umbraco.Cms.Core.Models.MediaWithCrops Thumbnail => this.Value<global::Umbraco.Cms.Core.Models.MediaWithCrops>(_publishedValueFallback, "thumbnail");
 
 		///<summary>
 		/// Video: The video to show in this block

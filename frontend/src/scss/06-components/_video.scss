@@ -1,0 +1,27 @@
+.c-video {
+  width: 100%;
+  height: fit-content;
+  position: relative;
+  
+  video {
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-radius: var(--border-radius);
+  }
+  
+  &__thumbnail {
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 16/9;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    z-index: 100;
+    
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}

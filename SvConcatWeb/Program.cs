@@ -39,7 +39,7 @@ var policyCollection = new HeaderPolicyCollection()
         builder.AddAccelerometer().None();
         builder.AddAutoplay().Self(); // Allow self-hosted video/audio if needed
         builder.AddCamera().None();
-        builder.AddEncryptedMedia().None();
+        // builder.AddEncryptedMedia().None();
         builder.AddFullscreen().All(); // Good for event photos/videos
         builder.AddGeolocation().None();
         builder.AddGyroscope().None();
