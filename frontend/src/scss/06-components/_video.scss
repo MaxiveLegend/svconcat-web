@@ -9,19 +9,60 @@
     border-radius: var(--border-radius);
   }
   
-  &__thumbnail {
+  &__thumbnail-container {
     position: absolute;
     content: '';
     width: 100%;
-    height: 100%;
     aspect-ratio: 16/9;
     border-radius: var(--border-radius);
     overflow: hidden;
-    z-index: 100;
+    z-index: 1;
     
     img {
       width: 100%;
       height: 100%;
+      position: relative;
+    }
+    
+    &::after {
+      position: absolute;
+      content: '';
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background-color: rgba(0, 0, 0, 0.45);
+      z-index: 2;
+    }
+    
+    .c-video__play-button {
+      position: absolute;
+      content: '';
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 150px;
+      height: 150px;
+      border-radius: var(--border-radius);
+      background-color: var(--color-secondary);
+      z-index: 3;
+      
+      &::after {
+        position: absolute;
+        content: '';
+        width: 50px;
+        height: 50px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-42%, -50%);
+        background-image: url("/dist/images/svg/play.svg");
+        background-repeat: no-repeat;
+        background-size: contain;
+      }
+      
+      &:hover {
+          background-color: var(--color-secondary-dark);
+      }
     }
   }
 }
