@@ -5,13 +5,32 @@
   color: var(--color-light);
   background-color: var(--color-secondary);
   font-size: $font-large;
+  font-weight: $font-weight-semibold;
   border-radius: var(--border-radius);
   padding: 0.5rem 1rem;
   width: fit-content;
   
   &:hover,
-  &:active {
+  &:active,
+  &:focus{
     color: var(--color-light);
     background-color: var(--color-secondary-dark);
   }
+  
+  &:disabled,
+  &[disabled]{
+    color: var(--color-light) !important;
+    background-color: var(--color-bg-dark) !important;
+  }
+  
+  &.c-button--primary {
+    background-color: var(--color-primary);
+    
+    &:hover,
+    &:active,
+    &:focus {
+      background-color: var(--color-primary-dark);
+    }
+  }
+
 }
