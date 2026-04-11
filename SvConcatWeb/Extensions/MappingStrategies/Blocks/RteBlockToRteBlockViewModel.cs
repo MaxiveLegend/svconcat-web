@@ -5,16 +5,15 @@ using Umbraco.Cms.Web.Common.PublishedModels;
 
 namespace SvConcatWeb.Extensions.MappingStrategies.Blocks;
 
-public class RteBlockToRteBlockViewModel : IMappingStrategy<BlockListItem, RteBlockViewModel>
+public class RteBlockToRteBlockViewModel : IMappingStrategy<RteBlock, RteBlockViewModel>
 {
-    public RteBlockViewModel Execute(BlockListItem source)
+    public RteBlockViewModel Execute(RteBlock source)
     {
-        var sourceContent = source?.Content as RteBlock;
         var vm = new RteBlockViewModel();
 
-        if (sourceContent == null) return vm;
+        if (source == null) return vm;
         
-        vm.Content = sourceContent.Content;
+        vm.Content = source.Content;
 
         return vm;
     }

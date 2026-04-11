@@ -8,19 +8,18 @@ using Umbraco.Cms.Web.Common.PublishedModels;
 
 namespace SvConcatWeb.Extensions.MappingStrategies.Blocks;
 
-public class HeroToHeroViewModel(IVariationContextAccessor variationContextAccessor) : IMappingStrategy<BlockListItem, HeroViewModel>
+public class HeroToHeroViewModel(IVariationContextAccessor variationContextAccessor) : IMappingStrategy<Hero, HeroViewModel>
 {
-    public HeroViewModel Execute(BlockListItem source)
+    public HeroViewModel Execute(Hero source)
     {
-        var sourceContent = source?.Content as Hero;
         var vm = new HeroViewModel();
         
-        if (sourceContent == null) return vm;
+        if (source == null) return vm;
 
-        vm.Title = sourceContent.Title ?? string.Empty;
-        vm.Subtitle = sourceContent.Subtitle ?? string.Empty;
+        vm.Title = source.Title ?? string.Empty;
+        vm.Subtitle = source.Subtitle ?? string.Empty;
         
-        SetHeroImage(vm, sourceContent);
+        SetHeroImage(vm, source);
 
         return vm;
     }

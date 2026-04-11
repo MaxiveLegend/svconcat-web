@@ -10,17 +10,17 @@ using Umbraco.Cms.Web.Common.PublishedModels;
 
 namespace SvConcatWeb.Extensions.MappingStrategies.Common;
 
-public class FooterColumnItemToFooterColumnItemViewModel(IVariationContextAccessor variationContextAccessor, IViewmodelFactory viewmodelFactory) : IMappingStrategy<BlockListItem, FooterColumnItemViewModel>
+public class FooterColumnItemToFooterColumnItemViewModel(IVariationContextAccessor variationContextAccessor, IViewmodelFactory viewmodelFactory) : IMappingStrategy<FooterItem, FooterColumnItemViewModel>
 {
-    public FooterColumnItemViewModel Execute(BlockListItem source)
+    public FooterColumnItemViewModel Execute(FooterItem source)
     {
         var vm = new FooterColumnItemViewModel();
-
-        if (source?.Content is not FooterItem sourceItem) return vm;
         
-        vm.Link = viewmodelFactory.CreateViewModel<Link, LinkViewModel>(sourceItem.Link);
-        vm.Text = sourceItem.Text ?? string.Empty;
-        SetIcon(vm, sourceItem);
+        if (source == null) return vm;
+        
+        vm.Link = viewmodelFactory.CreateViewModel<Link, LinkViewModel>(source.Link);
+        vm.Text = source.Text ?? string.Empty;
+        SetIcon(vm, source);
 
         return vm;
     }

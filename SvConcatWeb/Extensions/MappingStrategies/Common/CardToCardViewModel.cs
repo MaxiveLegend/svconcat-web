@@ -8,19 +8,19 @@ using Umbraco.Cms.Web.Common.PublishedModels;
 
 namespace SvConcatWeb.Extensions.MappingStrategies.Common;
 
-public class CardToCardViewModel(IVariationContextAccessor variationContextAccessor, IViewmodelFactory viewmodelFactory) : IMappingStrategy<IPublishedContent, CardViewModel>
+public class CardToCardViewModel(IVariationContextAccessor variationContextAccessor, IViewmodelFactory viewmodelFactory) : IMappingStrategy<ICard, CardViewModel>
 {
-    public CardViewModel Execute(IPublishedContent source)
+    public CardViewModel Execute(ICard source)
     {
         var vm = new CardViewModel();
 
-        if (source is not ICard card) return vm;
+        if (source == null) return vm;
 
-        vm.Title = card.CardTitle ?? string.Empty;
-        vm.Subtitle = card.CardSubtitle ?? string.Empty;
-        vm.Description = card.CardDescription ?? string.Empty;
-        vm.Cta = viewmodelFactory.CreateViewModel<Link, LinkViewModel>(card.CardLink);
-        SetImage(vm, card);
+        vm.Title = source.CardTitle ?? string.Empty;
+        vm.Subtitle = source.CardSubtitle ?? string.Empty;
+        vm.Description = source.CardDescription ?? string.Empty;
+        vm.Cta = viewmodelFactory.CreateViewModel<Link, LinkViewModel>(source.CardLink);
+        SetImage(vm, source);
 
         return vm;
     }

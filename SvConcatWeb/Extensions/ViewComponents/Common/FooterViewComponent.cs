@@ -3,6 +3,7 @@ using SvConcatWeb.Extensions.Models;
 using SvConcatWeb.Extensions.ViewModels.Common.Footer;
 using SvConcatWeb.Extensions.ViewModelStrategy.Interfaces;
 using Umbraco.Cms.Core.Models.Blocks;
+using Umbraco.Cms.Web.Common.PublishedModels;
 
 namespace SvConcatWeb.Extensions.ViewComponents.Common;
 
@@ -14,7 +15,9 @@ public class FooterViewComponent(IViewmodelFactory viewmodelFactory) : ViewCompo
 
         if (source?.Website == null) return View(vm);
 
-        vm.Columns = source.Website.Columns.Select(viewmodelFactory.CreateViewModel<BlockListItem, FooterColumnViewModel>);
+        vm.Columns = source.Website.Columns
+            .Select(column => column?.Content as FooterColumn)
+            .Select(viewmodelFactory.CreateViewModel<FooterColumn, FooterColumnViewModel>);
 
         return View(vm);
     }

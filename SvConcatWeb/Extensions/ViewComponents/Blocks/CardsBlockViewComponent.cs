@@ -12,9 +12,9 @@ public class CardsBlockViewComponent(IViewmodelFactory viewmodelFactory) : ViewC
     {
         var vm = new CardsBlockViewModel();
 
-        if (source?.Content is not CardsBlock) return View(vm);
+        if (source?.Content is not CardsBlock cardsBlock) return View(vm);
 
-        vm = viewmodelFactory.CreateViewModel<BlockListItem, CardsBlockViewModel>(source);
+        vm = viewmodelFactory.CreateViewModel<CardsBlock, CardsBlockViewModel>(cardsBlock);
         
         return View(vm);
     }

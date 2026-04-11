@@ -12,9 +12,9 @@ public class HeroViewComponent(IViewmodelFactory viewmodelFactory) : ViewCompone
     {
         var vm = new HeroViewModel();
 
-        if (source?.Content is not Hero) return View(vm);
+        if (source?.Content is not Hero hero) return View(vm);
 
-        vm = viewmodelFactory.CreateViewModel<BlockListItem, HeroViewModel>(source);
+        vm = viewmodelFactory.CreateViewModel<Hero, HeroViewModel>(hero);
         
         return View(vm);
     }

@@ -12,9 +12,9 @@ public class RteBlockViewComponent(IViewmodelFactory viewmodelFactory) : ViewCom
     {
         var vm = new RteBlockViewModel();
 
-        if (source?.Content is not RteBlock) return View(vm);
+        if (source?.Content is not RteBlock rteBlock) return View(vm);
 
-        vm = viewmodelFactory.CreateViewModel<BlockListItem, RteBlockViewModel>(source);
+        vm = viewmodelFactory.CreateViewModel<RteBlock, RteBlockViewModel>(rteBlock);
 
         return vm.HasContent ? View(vm) : Content(string.Empty);
     }
