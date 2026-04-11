@@ -16,7 +16,11 @@ public class VideoBlockToVideoBlockViewModel(IVariationContextAccessor variation
         vm.VideoUrl = source.Video?.MediaUrl() ?? string.Empty;
         vm.StartTime = source.StartTime;
         vm.Duration = source.Duration;
-        SetThumbnail(vm, source);
+
+        if (source.Thumbnail != null)
+        {
+            SetThumbnail(vm, source);
+        }
 
         return vm;
     }

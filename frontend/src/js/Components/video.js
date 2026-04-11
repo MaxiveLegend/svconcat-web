@@ -6,12 +6,11 @@ export default class VideoPlayer {
     playVideoBound = null;
     
     constructor(element) {
-        console.log("Initializing video...")
         this.container = element;
 
-        this.playButton = this.container.querySelector<HTMLElement>('.c-video__play-button');
-        this.thumbnail = this.container.querySelector<HTMLElement>('.c-video__thumbnail');
-        this.videoElement = this.container.querySelector<HTMLElement>('video');
+        this.playButton = this.container.querySelector('.c-video__play-button');
+        this.thumbnail = this.container.querySelector('.c-video__thumbnail-container');
+        this.videoElement = this.container.querySelector('video');
 
         this.bindEvents();
     }
@@ -26,12 +25,14 @@ export default class VideoPlayer {
     playVideo() {
         console.log("Playing video...");
         if (this.thumbnail) {
-            this.thumbnail.classList.add('.u-visually-hidden');
+            this.thumbnail.classList.add('u-visually-hidden');
         }
 
         if (this.playButton) {
-            this.playButton.classList.add('.u-visually-hidden');
+            this.playButton.classList.add('u-visually-hidden');
         }
+        
+        this.videoElement.controls = "controls"
         
         this.videoElement.play();
     }

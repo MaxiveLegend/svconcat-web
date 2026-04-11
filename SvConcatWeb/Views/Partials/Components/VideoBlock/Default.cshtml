@@ -5,20 +5,24 @@
     <div class="container">
         <div class="c-video" data-component="video">
             <div class="c-video__thumbnail-container">
-                <picture class="c-video__thumbnail">
-
-                    @foreach (var source in Model.Thumbnail.Sources)
-                    {
-                        <source srcset="@source.Src" media="@source.MediaQuery">
-                    }
-
-                    <img src="@Model.Thumbnail.Url" alt="@Model.Thumbnail.Alt">
-                </picture>
                 
+                @if (Model.HasThumbnail)
+                {
+                    <picture class="c-video__thumbnail">
+
+                        @foreach (var source in Model.Thumbnail.Sources)
+                        {
+                            <source srcset="@source.Src" media="@source.MediaQuery">
+                        }
+
+                        <img src="@Model.Thumbnail.Url" alt="@Model.Thumbnail.Alt">
+                    </picture>
+                }
+
                 <button class="c-video__play-button"></button>
             </div>
 
-            <video controls>
+            <video>
                 <source src="@Model.GetFullUrl" type="video/mp4">
             </video>
         </div>

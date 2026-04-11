@@ -1,12 +1,12 @@
 const componentInstances = [];
 
 const initializeComponents = async () => {
-    const elements = document.querySelectorAll<HTMLElement>('[data-component]');
+    const elements = document.querySelectorAll('[data-component]');
 
     for (const element of elements) {
-        if (!componentInstances.find(element)) continue;
+        if (componentInstances.includes(element)) continue;
 
-        const componentNamePascalCase = element.data.component;
+        const componentNamePascalCase = element.dataset.component;
 
         if (!componentNamePascalCase) {
             console.warn("Element has 'data-component' attribute without a value.", element);
@@ -18,7 +18,7 @@ const initializeComponents = async () => {
             // - Components are in frontend/src/js/components
             // - Component files are named PascalCase.js
             // - Component classes are default exports
-            const module = await import(`./${componentNamePascalCase}.js`);
+            const module = await import(`./Components/${componentNamePascalCase}.js`);
 
             if (!module.default || typeof module.default !== 'function') {
                 console.warn(`Module for '${componentNamePascalCase}' (from data-component=${componentNamePascalCase}) loaded, but it's not a valid component class with a default export.`);
@@ -46,3 +46,9 @@ const initializeComponents = async () => {
         }
     }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    initializeComponents().catch(error => {
+        console.error("Error during component initialization:", error);
+    });
+});
