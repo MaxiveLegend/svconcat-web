@@ -1,0 +1,9 @@
+@using SvConcatWeb.Extensions.ViewModels.Blocks
+@inherits UmbracoViewPage<MediaBlockViewModel>
+
+<section class="o-section">
+    @Model.Title
+    @Model.Text
+    <a href="@Model.Cta.Url" target="@Model.Cta.Target">@Model.Cta.Name</a>
+    <img src="@Model.Media.Url" alt="@Model.Media.Alt">
+</section>
