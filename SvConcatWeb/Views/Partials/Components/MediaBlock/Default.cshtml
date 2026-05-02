@@ -2,8 +2,25 @@
 @inherits UmbracoViewPage<MediaBlockViewModel>
 
 <section class="o-section">
-    @Model.Title
-    @Model.Text
-    <a href="@Model.Cta.Url" target="@Model.Cta.Target">@Model.Cta.Name</a>
-    <img src="@Model.Media.Url" alt="@Model.Media.Alt">
+    <div class="container">
+        <div class="c-media">
+            <div class="c-media__body">
+                <h2>@Model.Title</h2>
+                @Model.Text
+                <a class="c-button" href="@Model.Cta.Url" target="@Model.Cta.Target">@Model.Cta.Name</a>
+            </div>
+            
+            <div class="c-media__media">
+                <picture>
+                    
+                    @foreach (var src in Model.Media.Sources)
+                    {
+                        <source srcset="@src.Src" media="@src.MediaQuery">
+                    }
+                    
+                    <img src="@Model.Media.Url" alt="@Model.Media.Alt">
+                </picture>
+            </div>
+        </div>
+    </div>
 </section>

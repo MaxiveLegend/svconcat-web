@@ -58,6 +58,10 @@ a {
   }
 }
 
+img {
+  display: block;
+}
+
 .body--sm {
   @include responsive-font.responsive-font(
     map.get(typography.$body-font-sizes, sm)
