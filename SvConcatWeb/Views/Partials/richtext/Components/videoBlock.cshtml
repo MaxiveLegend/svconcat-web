@@ -2,10 +2,10 @@
 @using SvConcatWeb.Extensions.ViewModelStrategy.Interfaces
 @using Umbraco.Cms.Core.Models.Blocks
 @inject IViewmodelFactory ViewmodelFactory
-@model RichTextBlockItem<ImageBlock, IPublishedElement>
+@model RichTextBlockItem<VideoBlock, IPublishedElement>
 
 @{
-    var vm = ViewmodelFactory.CreateViewModel<ImageBlock, ImageBlockViewModel>(Model.Content);
+    var vm = ViewmodelFactory.CreateViewModel<VideoBlock, VideoBlockViewModel>(Model.Content);
 }
 
-@await Html.PartialAsync("common/Image", vm)
+@await Html.PartialAsync("common/Video", vm)

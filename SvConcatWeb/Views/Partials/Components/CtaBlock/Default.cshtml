@@ -3,21 +3,8 @@
 
 <div class="o-section">
     <div class="container">
-        <div class="c-cta">
-            <h2>@Model.Title</h2>
-            <p class="c-cta__text">@Model.Text</p>
-            <div class="c-cta__buttons">
-                
-                @{
-                    var isFirst = true;
-                    foreach (var link in Model.Links)
-                    {
-                        <a class="c-button @Html.If(!isFirst, "c-button--primary")" href="@link.Url" target="@link.Target">@link.Name</a>
-                        isFirst = false;
-                    }
-                }
-                
-            </div>
-        </div>
+        
+        @await Html.PartialAsync("common/Cta", Model)
+        
     </div>
 </div>

@@ -1,4 +1,6 @@
 .c-rte {
+  width: 75%;
+  
   ul,
   ol {
     li p {
@@ -9,6 +11,10 @@
   .c-image,
   .c-video,
   .c-cta {
-    max-width: 75%;
+    max-width: 100%;
+    
+    &:not(:last-child) {
+      margin-block-end: 2rem;
+    }
   }
 }
