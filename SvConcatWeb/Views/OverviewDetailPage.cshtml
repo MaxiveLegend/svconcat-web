@@ -1,0 +1,9 @@
+﻿@inherits UmbracoViewPage<SvConcatWeb.Extensions.Models.MasterModel<OverviewDetailPage>>
+
+@{
+    Layout = "Master.cshtml";
+}
+
+@Html.GetBlockListHtml(Model.Content.Hero)
+
+@Html.GetBlockListHtml(Model.Content.Content)

@@ -19,13 +19,43 @@
   }
   
   &__body {
-    margin-block-start: 10rem;
-    margin-inline: 4.75rem;
+    position: absolute;
+    width: fit-content;
+    height: fit-content;
+    left: 4.75rem;
+    bottom: 5.875rem;
     
     h1,
     p {
       color: var(--color-light);
       margin: 0;
+    }
+  }
+  
+  &--detail {
+    height: var(--hero-height--detail);
+    
+    .c-hero__media::after {
+      position: absolute;
+      content: '';
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(0deg, #000000, #666666);
+      opacity: 50%;
+    }
+    
+    .c-hero__body {
+      left: 4.75rem;
+      bottom: 2.625rem;
+    }
+    
+    .c-hero__cta {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      border-radius: var(--border-radius) 0 0 0;
+      padding: 1.5rem;
     }
   }
 }
