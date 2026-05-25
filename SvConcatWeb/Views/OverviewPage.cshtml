@@ -1,0 +1,40 @@
+﻿@inherits UmbracoViewPage<SvConcatWeb.Extensions.Models.MasterModel<OverviewPage>>
+
+@{
+    Layout = "Master.cshtml";
+}
+
+@Html.GetBlockListHtml(Model.Content.Hero)
+
+<section class="o-section">
+    <div class="container">
+        <div class="c-overview">
+            <div class="c-overview__top">
+                <h2>Evenementen</h2> @* TODO: get from dictionary *@
+                
+                <div class="c-overview__facets">
+                    <div class="c-overview__facets__year">
+                        <button>-</button>
+                        <div class="c-overview__facets__year__current">Jaartal @* TODO: Make content rendered by JS *@</div>
+                        <button>+</button>
+                    </div>
+                    <div class="c-overview__facets__ordering">
+                        <select name="ordering-option" id="ordering">
+                            <option value="newest" selected>Nieuwste eerst</option> @* TODO: get from dictionary *@
+                            <option value="newest">Oudste eerst</option> @* TODO: get from dictionary *@
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="c-overview__content">
+                @* Content is rendered by JS *@
+            </div>
+            
+            <div class="c-overview__pagination">
+                <button>&lt;-</button>
+                <button>-&gt;</button>
+            </div>
+        </div>
+    </div>
+</section>

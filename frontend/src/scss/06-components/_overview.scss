@@ -1,0 +1,64 @@
+@use '../01-settings/typography' as *;
+
+.c-overview {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  
+  &__top {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  
+  &__facets {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-inline-start: auto;
+    
+    &__year {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      
+      background-color: var(--color-secondary);
+      color: var(--color-light);
+      border: 2px solid var(--color-secondary-dark);
+      border-radius: var(--border-radius);
+      font-weight: $font-weight-semibold;
+      padding: 0.5rem 1rem;
+      
+      button {
+        font-size: 22px;
+        color: var(--color-light);
+        font-weight: $font-weight-semibold;
+        
+        &:active,
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+    
+    &__ordering {
+      select {
+        font-size: 22px;
+        background-color: var(--color-secondary);
+        color: var(--color-light);
+        border: 2px solid var(--color-secondary-dark);
+        border-radius: var(--border-radius);
+        font-weight: $font-weight-semibold;
+  
+        padding: 0.5rem 1rem;
+      }
+    }
+  }
+  
+  &__pagination {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: end;
+  }
+}

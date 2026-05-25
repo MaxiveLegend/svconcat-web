@@ -13,13 +13,13 @@
                      width="192" height="52"/>
             </picture>
         </a>
-        
+    
         <div class="c-header__nav__group c-header__nav__group--main col-6">
             @foreach (var navItem in Model.MainNavItems)
             {
                 var currentUrl = Model.CurrentPage.Url().ToLower().TrimEnd('/');
                 var linkUrl = navItem.Url?.ToLower().TrimEnd('/');
-                
+    
                 <a class="c-header__nav__link @Html.If(currentUrl.Equals(linkUrl), "c-header__nav__link--active")"
                    href="@navItem.Url"
                    target="@navItem.Target">
@@ -27,7 +27,7 @@
                 </a>
             }
         </div>
-        
+    
         <div class="c-header__nav__group c-header__nav__group--secondary col-3">
             @foreach (var externalLink in Model.ExternalLinks)
             {

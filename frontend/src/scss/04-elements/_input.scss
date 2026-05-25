@@ -8,4 +8,5 @@ input, textarea, select {
   border-radius: var(--border-radius);
   line-height: typography.$line-height-extra-large;
   padding: 12px 20px;
+  font-family: var(--font-family);
 }
