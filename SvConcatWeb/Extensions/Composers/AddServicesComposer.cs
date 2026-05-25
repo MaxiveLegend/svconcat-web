@@ -10,5 +10,6 @@ public class AddServicesComposer : IComposer
     public void Compose(IUmbracoBuilder builder)
     {
         builder.Services.AddSingleton<IModelService, ModelService>();
+        builder.Services.AddScoped<IOverviewQueryService, OverviewQueryService>();
     }
 }

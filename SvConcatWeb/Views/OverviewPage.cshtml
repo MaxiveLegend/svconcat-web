@@ -1,14 +1,27 @@
 ﻿@inherits UmbracoViewPage<SvConcatWeb.Extensions.Models.MasterModel<OverviewPage>>
+@using Umbraco.Cms.Web.Common.PublishedModels
 
 @{
     Layout = "Master.cshtml";
 
-    // TODO: drive these from Umbraco properties / a service once the API is in place.
-    var currentYear = DateTime.UtcNow.Year;
-    var minYear = 2000;
-    var maxYear = currentYear;
     const int pageSize = 12;
     const string overviewEndpoint = "/umbraco/api/overview/items";
+
+    // Read child event years straight from the published cache so the year stepper
+    // can be clamped to years that actually contain content.
+    var fallbackYear = DateTime.UtcNow.Year;
+    var availableYears = Model.Content
+        .Children<OverviewDetailPage>()
+        .Where(child => child.IsVisible())
+        .Select(child => child.Value<DateTime>("eventDate").Year)
+        .Where(year => year > 1) // ignore items missing an eventDate (DateTime.MinValue)
+        .Distinct()
+        .OrderBy(year => year)
+        .ToList();
+
+    var minYear = availableYears.Count > 0 ? availableYears.First() : fallbackYear;
+    var maxYear = availableYears.Count > 0 ? availableYears.Last() : fallbackYear;
+    var currentYear = maxYear;
 }
 
 @Html.GetBlockListHtml(Model.Content.Hero)
@@ -18,6 +31,7 @@
         <div class="c-overview"
              data-component="Overview"
              data-overview-endpoint="@overviewEndpoint"
+             data-overview-page-key="@Model.Content.Key"
              data-overview-current-year="@currentYear"
              data-overview-min-year="@minYear"
              data-overview-max-year="@maxYear"
@@ -45,9 +59,10 @@
                 @* Content is rendered by JS *@
             </div>
             
-            <div class="c-overview__pagination" data-overview-pagination hidden>
-                <button type="button" data-overview-page-previous disabled>&lt;-</button>
-                <button type="button" data-overview-page-next disabled>-&gt;</button>
+            <div class="c-overview__pagination" data-overview-pagination>
+                <button type="button" class="c-overview__pagination__arrow" data-overview-page-previous disabled aria-label="Vorige pagina">&lt;-</button>
+                <ol class="c-overview__pagination__pages" data-overview-pagination-pages></ol>
+                <button type="button" class="c-overview__pagination__arrow" data-overview-page-next disabled aria-label="Volgende pagina">-&gt;</button>
             </div>
         </div>
     </div>

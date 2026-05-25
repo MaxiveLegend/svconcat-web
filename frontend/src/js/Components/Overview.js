@@ -19,7 +19,16 @@ export default class Overview {
         this.container = element;
         this.config = this.readConfig();
 
+        if (!this.config.pageKey) {
+            console.warn(
+                "Overview: missing data-overview-page-key; the API has no way to scope the result to a page.",
+                this.container,
+            );
+            return;
+        }
+
         this.state = new OverviewState({
+            pageKey: this.config.pageKey,
             year: this.config.currentYear,
             ordering: this.config.ordering,
             page: 1,
@@ -67,6 +76,7 @@ export default class Overview {
 
         return {
             endpoint: ds.overviewEndpoint || "/umbraco/api/overview/items",
+            pageKey: ds.overviewPageKey ?? "",
             currentYear: Number.isFinite(currentYear) ? currentYear : fallbackYear,
             minYear: Number.isFinite(minYear) ? minYear : 2000,
             maxYear: Number.isFinite(maxYear) ? maxYear : fallbackYear,
@@ -79,17 +89,28 @@ export default class Overview {
         this.renderer.renderLoading();
 
         try {
-            const result = await this.api.fetchItems(snapshot);
+            const { items, pagination } = await this.api.fetchItems(snapshot);
 
-            this.renderer.renderItems(result.items ?? []);
-            this.pagination.update(result.page ?? snapshot.page, result.totalPages ?? 1);
+            this.renderer.renderItems(items ?? []);
+            this.pagination.update(pagination ?? this.emptyPagination(snapshot));
         } catch (error) {
             // A newer request superseded this one; the newer call owns the render.
             if (error.name === "AbortError") return;
 
             console.error("Overview: failed to fetch items", error);
             this.renderer.renderError();
-            this.pagination.update(snapshot.page, 1);
+            this.pagination.update(this.emptyPagination(snapshot));
         }
+    }
+
+    emptyPagination(snapshot) {
+        return {
+            page: snapshot.page,
+            pageSize: snapshot.pageSize,
+            totalPages: 1,
+            totalItems: 0,
+            hasPrevious: false,
+            hasNext: false,
+        };
     }
 }

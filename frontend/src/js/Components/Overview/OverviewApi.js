@@ -1,7 +1,7 @@
 /**
  * Thin fetch wrapper for the overview list endpoint.
  *
- * Expected response shape (to be confirmed when the backend is in place):
+ * Expected response shape:
  * {
  *   items: Array<{
  *     title: string,
@@ -10,10 +10,14 @@
  *     image?: { url: string, alt?: string, sources?: Array<{ src: string, mediaQuery: string }> },
  *     cta?:   { url: string, name: string, target?: string }
  *   }>,
- *   page: number,
- *   pageSize: number,
- *   totalPages: number,
- *   totalItems: number
+ *   pagination: {
+ *     page: number,
+ *     pageSize: number,
+ *     totalPages: number,    // always >= 1, even when totalItems == 0
+ *     totalItems: number,
+ *     hasPrevious: boolean,
+ *     hasNext: boolean
+ *   }
  * }
  */
 export default class OverviewApi {
@@ -24,7 +28,7 @@ export default class OverviewApi {
         this.endpoint = endpoint;
     }
 
-    async fetchItems({ year, ordering, page, pageSize }) {
+    async fetchItems({ pageKey, year, ordering, page, pageSize }) {
         // Cancel any in-flight request so the most recent user interaction wins.
         if (this.abortController) {
             this.abortController.abort();
@@ -32,6 +36,7 @@ export default class OverviewApi {
         this.abortController = new AbortController();
 
         const url = new URL(this.endpoint, window.location.origin);
+        url.searchParams.set("pageKey", pageKey);
         url.searchParams.set("year", String(year));
         url.searchParams.set("ordering", ordering);
         url.searchParams.set("page", String(page));
