@@ -55,10 +55,28 @@
     }
   }
   
+  &__content {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+  
   &__pagination {
     display: flex;
     align-items: center;
     gap: 1rem;
     justify-content: end;
+    
+    button {
+      width: 42px;
+      aspect-ratio: 1;
+      border-radius: 100%;
+      background-color: var(--color-secondary);
+      color: var(--color-light);
+      font-size: 22px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 }
