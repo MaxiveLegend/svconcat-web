@@ -55,9 +55,7 @@ export default class OverviewCardRenderer {
                     <span class="c-card__subtitle">${this.escape(item.subtitle ?? "")}</span>
                     <p class="c-card__description">${this.escape(item.description ?? "")}</p>
                 </div>
-                <div class="c-card__link">
-                    <a href="${this.escape(cta.url ?? "#")}" target="${this.escape(cta.target ?? "")}">${this.escape(cta.name ?? "")}</a>
-                </div>
+                <a  class="c-card__link" href="${this.escape(cta.url ?? "#")}" target="${this.escape(cta.target ?? "")}">${this.escape(cta.name ?? "")}</a>
             </div>
         `;
     }

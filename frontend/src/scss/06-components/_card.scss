@@ -65,16 +65,15 @@
     background-color: var(--color-secondary);
     border-top-left-radius: var(--border-radius);
     
-    a {
-      color: var(--color-light);
-      text-decoration: none;
-      font-size: $font-small;
-      font-weight: $font-weight-semibold;
-    }
+    color: var(--color-light);
+    text-decoration: none;
+    font-size: $font-small;
+    font-weight: $font-weight-semibold;
     
     &:hover,
     &:active {
       background-color: var(--color-secondary-dark);
+      color: var(--color-light);
     }
   }
 }
