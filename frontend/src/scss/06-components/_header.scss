@@ -3,6 +3,7 @@
 .c-header {
   background-color: var(--color-primary);
   height: var(--header-height);
+  flex-shrink: 0;
   padding-inline: 1rem;
   border-radius: 0 0 var(--border-radius) var(--border-radius);
   color: var(--color-light);
