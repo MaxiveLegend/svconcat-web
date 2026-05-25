@@ -2,38 +2,52 @@
 
 @{
     Layout = "Master.cshtml";
+
+    // TODO: drive these from Umbraco properties / a service once the API is in place.
+    var currentYear = DateTime.UtcNow.Year;
+    var minYear = 2000;
+    var maxYear = currentYear;
+    const int pageSize = 12;
+    const string overviewEndpoint = "/umbraco/api/overview/items";
 }
 
 @Html.GetBlockListHtml(Model.Content.Hero)
 
 <section class="o-section">
     <div class="container">
-        <div class="c-overview">
+        <div class="c-overview"
+             data-component="Overview"
+             data-overview-endpoint="@overviewEndpoint"
+             data-overview-current-year="@currentYear"
+             data-overview-min-year="@minYear"
+             data-overview-max-year="@maxYear"
+             data-overview-page-size="@pageSize"
+             data-overview-ordering="newest">
             <div class="c-overview__top">
                 <h2>Evenementen</h2> @* TODO: get from dictionary *@
                 
                 <div class="c-overview__facets">
                     <div class="c-overview__facets__year">
-                        <button>-</button>
-                        <div class="c-overview__facets__year__current">Jaartal @* TODO: Make content rendered by JS *@</div>
-                        <button>+</button>
+                        <button type="button" data-overview-year-decrement>-</button>
+                        <div class="c-overview__facets__year__current" data-overview-year-display>@currentYear</div>
+                        <button type="button" data-overview-year-increment>+</button>
                     </div>
                     <div class="c-overview__facets__ordering">
-                        <select name="ordering-option" id="ordering">
+                        <select name="ordering-option" id="ordering" data-overview-ordering>
                             <option value="newest" selected>Nieuwste eerst</option> @* TODO: get from dictionary *@
-                            <option value="newest">Oudste eerst</option> @* TODO: get from dictionary *@
+                            <option value="oldest">Oudste eerst</option> @* TODO: get from dictionary *@
                         </select>
                     </div>
                 </div>
             </div>
             
-            <div class="c-overview__content">
+            <div class="c-overview__content" data-overview-content aria-live="polite" aria-busy="false">
                 @* Content is rendered by JS *@
             </div>
             
-            <div class="c-overview__pagination">
-                <button>&lt;-</button>
-                <button>-&gt;</button>
+            <div class="c-overview__pagination" data-overview-pagination hidden>
+                <button type="button" data-overview-page-previous disabled>&lt;-</button>
+                <button type="button" data-overview-page-next disabled>-&gt;</button>
             </div>
         </div>
     </div>
