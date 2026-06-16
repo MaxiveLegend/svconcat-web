@@ -41,6 +41,29 @@ jobs:
           echo "ASPNETCORE_ENVIRONMENT=$aspnet" >> "$GITHUB_ENV"
           echo "Deploying to '$env_in' (ASPNETCORE_ENVIRONMENT=$aspnet)"
 
+      - name: Validate deployment config
+        shell: bash
+        # Fail fast with a clear message instead of letting Umbraco crash-loop on
+        # boot when the unattended-install config is incomplete. Values are not
+        # echoed (this repo is public -> logs are public).
+        env:
+          ADMIN_EMAIL: ${{ secrets.UMBRACO_ADMIN_EMAIL }}
+          ADMIN_PASSWORD: ${{ secrets.UMBRACO_ADMIN_PASSWORD }}
+        run: |
+          fail=0
+          if [[ -z "${ADMIN_EMAIL}" ]]; then
+            echo "::error::Variable UMBRACO_ADMIN_EMAIL is empty for the '${{ inputs.environment }}' environment. Add it under Settings -> Environments -> ${{ inputs.environment }} -> Environment *variables* (NOT secrets)."
+            fail=1
+          elif [[ "${ADMIN_EMAIL}" != *@*.* ]]; then
+            echo "::error::UMBRACO_ADMIN_EMAIL is not a valid email address."
+            fail=1
+          fi
+          if [[ -z "${ADMIN_PASSWORD}" ]]; then
+            echo "::error::Secret UMBRACO_ADMIN_PASSWORD is empty for the '${{ inputs.environment }}' environment. Add it under Settings -> Environments -> ${{ inputs.environment }} -> Environment secrets."
+            fail=1
+          fi
+          [[ "$fail" -eq 0 ]] && echo "Deployment config OK." || exit 1
+
       - name: Build & deploy
         shell: bash
         # Secrets are injected as real environment variables (verbatim, never
@@ -52,8 +75,8 @@ jobs:
         # ASPNETCORE_ENVIRONMENT is inherited from the step above ($GITHUB_ENV).
         env:
           UMBRACO_USE_HTTPS: "true"
-          Umbraco__CMS__Unattended__UnattendedUserName: ${{ vars.UMBRACO_ADMIN_NAME || 'Administrator' }}
-          Umbraco__CMS__Unattended__UnattendedUserEmail: ${{ vars.UMBRACO_ADMIN_EMAIL }}
+          Umbraco__CMS__Unattended__UnattendedUserName: ${{ secrets.UMBRACO_ADMIN_NAME || 'Administrator' }}
+          Umbraco__CMS__Unattended__UnattendedUserEmail: ${{ secrets.UMBRACO_ADMIN_EMAIL }}
           Umbraco__CMS__Unattended__UnattendedUserPassword: ${{ secrets.UMBRACO_ADMIN_PASSWORD }}
         # --wait blocks until the container reports healthy (per the compose
         # healthcheck) and fails the job if it doesn't within the timeout.
