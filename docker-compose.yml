@@ -1,0 +1,50 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: svconcat-web:latest
+    container_name: svconcat-web
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    # NOTE: list form (not map) so the secret keys below can be "pass-through":
+    # a bare "KEY" (no =value) copies KEY verbatim from the process environment
+    # with NO compose interpolation, so special characters in the password
+    # (notably "$") are never mangled. CI supplies them via the deploy step's
+    # env: (from GitHub secrets); locally they come from .env (see .env.example,
+    # where a literal "$" must be escaped as "$$").
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_FORWARDEDHEADERS_ENABLED=true
+      # UseHttps=true (prod): backoffice requires HTTPS (satisfied via the
+      # forwarded scheme above) and cookies are marked Secure.
+      # Set UMBRACO_USE_HTTPS=false in .env for LOCAL plain-HTTP testing with no
+      # proxy in front (disables OpenIddict's transport-security requirement).
+      - Umbraco__CMS__Global__UseHttps=${UMBRACO_USE_HTTPS:-true}
+      # --- Unattended install (first boot) ---------------------------------
+      # Provisions the SQLite DB + admin user on first boot instead of showing
+      # the installer. Only used the first time the DB is created.
+      - Umbraco__CMS__Unattended__InstallUnattended=true
+      # Pass-through (verbatim, no interpolation) — see note above.
+      - Umbraco__CMS__Unattended__UnattendedUserName
+      - Umbraco__CMS__Unattended__UnattendedUserEmail
+      - Umbraco__CMS__Unattended__UnattendedUserPassword
+    volumes:
+      # SQLite DB, Examine indexes, NuCache, TEMP.
+      - umbraco-data:/app/umbraco/Data
+      # Uploaded media.
+      - umbraco-media:/app/wwwroot/media
+    # Health is what `docker compose up --wait` (in CI) blocks on. start_period
+    # gives Umbraco room to run its first-boot DB migration before failures count.
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 90s
+
+volumes:
+  umbraco-data:
+  umbraco-media:

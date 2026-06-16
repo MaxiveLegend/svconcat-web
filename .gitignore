@@ -58,6 +58,12 @@ nunit-*.xml
 
 node_modules/
 
+# Local secrets / runtime env (written by CI from GitHub Actions secrets).
+# Keep .env.example committed as the documented template.
+.env
+*.env
+!.env.example
+
 # Generated SVG sprite (built from icons.config.js + @fortawesome/fontawesome-free)
 frontend/public/images/icons/sprite.svg
 
