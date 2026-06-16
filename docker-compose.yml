@@ -15,7 +15,9 @@ services:
     # env: (from GitHub secrets); locally they come from .env (see .env.example,
     # where a literal "$" must be escaped as "$$").
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      # Set by CI per target (production -> Production, testing -> Testing).
+      # Defaults to Production for local/manual runs.
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT:-Production}
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_FORWARDEDHEADERS_ENABLED=true
       # UseHttps=true (prod): backoffice requires HTTPS (satisfied via the
