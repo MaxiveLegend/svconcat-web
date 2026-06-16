@@ -2,12 +2,14 @@
   "name": "svconcat-frontend",
   "type": "module",
   "scripts": {
-    "dev": "vite build --mode development",
-    "watch": "vite build --mode development --watch",
-    "prod": "vite build --mode production"
+    "sprite": "node scripts/build-sprite.mjs",
+    "dev": "npm run sprite && vite build --mode development",
+    "watch": "npm run sprite && vite build --mode development --watch",
+    "prod": "npm run sprite && vite build --mode production"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
+    "@fortawesome/fontawesome-free": "^7.2.0",
     "eslint": "^9.39.4",
     "globals": "^17.6.0",
     "meow": "^13.2.0",

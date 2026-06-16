@@ -58,6 +58,9 @@ nunit-*.xml
 
 node_modules/
 
+# Generated SVG sprite (built from icons.config.js + @fortawesome/fontawesome-free)
+frontend/public/images/icons/sprite.svg
+
 **/wwwroot/dist/
 **/uSync/**/Content
 **/uSync/**/Media

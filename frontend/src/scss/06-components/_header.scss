@@ -11,6 +11,12 @@
   
   &__nav {
     height: 100%;
+
+    // The header is a full-width bar, so its 12-col grid must always fill the
+    // available width. Without this, the shared `.row` desktop-large rule caps
+    // columns at `minmax(0, 80px)`, leaving empty space on the right between
+    // ~1520px and the `wide` (1728px) breakpoint.
+    grid-template-columns: repeat(12, 1fr);
     
     &__group {
       display: flex;

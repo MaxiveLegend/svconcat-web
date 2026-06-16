@@ -33,7 +33,7 @@
   }
   
   &--detail {
-    height: var(--hero-height--detail);
+    height: var(--hero-height-detail);
     
     .c-hero__media::after {
       position: absolute;
@@ -41,8 +41,8 @@
       bottom: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(0deg, #000000, #666666);
-      opacity: 50%;
+      background: linear-gradient(0deg, #000, #666);
+      opacity: 0.5;
     }
     
     .c-hero__body {
