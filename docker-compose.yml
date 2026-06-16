@@ -1,0 +1,40 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: svconcat-web:latest
+    container_name: svconcat-web
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_HTTP_PORTS: "8080"
+      # --- Unattended install (first boot) ---------------------------------
+      # With these set, Umbraco provisions the SQLite DB + admin user on first
+      # boot instead of showing the installer screen. These are only used the
+      # first time the DB is created; afterwards they are ignored.
+      # Values are interpolated from a root .env file (see .env.example), which
+      # CI writes from GitHub Actions secrets at deploy time.
+      Umbraco__CMS__Unattended__InstallUnattended: "true"
+      Umbraco__CMS__Unattended__UnattendedUserName: "${UMBRACO_ADMIN_NAME:-Administrator}"
+      Umbraco__CMS__Unattended__UnattendedUserEmail: "${UMBRACO_ADMIN_EMAIL:?set UMBRACO_ADMIN_EMAIL in .env}"
+      Umbraco__CMS__Unattended__UnattendedUserPassword: "${UMBRACO_ADMIN_PASSWORD:?set UMBRACO_ADMIN_PASSWORD in .env}"
+    volumes:
+      # SQLite DB, Examine indexes, NuCache, TEMP.
+      - umbraco-data:/app/umbraco/Data
+      # Uploaded media.
+      - umbraco-media:/app/wwwroot/media
+    # Health is what `docker compose up --wait` (in CI) blocks on. start_period
+    # gives Umbraco room to run its first-boot DB migration before failures count.
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 90s
+
+volumes:
+  umbraco-data:
+  umbraco-media:

@@ -1,0 +1,69 @@
+name: Deploy (homelab)
+
+# Manual trigger only — no auto-deploy on push.
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-homelab
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    # Runs on the self-hosted runner installed on the homelab box.
+    # Register a runner with the "homelab" label under
+    # Settings -> Actions -> Runners.
+    runs-on: [self-hosted, homelab]
+
+    # Uses the "homelab" GitHub Environment, which holds the secrets below.
+    environment: homelab
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Write .env from secrets
+        shell: bash
+        run: |
+          umask 077
+          cat > .env <<EOF
+          UMBRACO_ADMIN_NAME=${{ secrets.UMBRACO_ADMIN_NAME || 'Administrator' }}
+          UMBRACO_ADMIN_EMAIL=${{ secrets.UMBRACO_ADMIN_EMAIL }}
+          UMBRACO_ADMIN_PASSWORD=${{ secrets.UMBRACO_ADMIN_PASSWORD }}
+          EOF
+
+      - name: Build & deploy
+        shell: bash
+        # --wait blocks until the container reports healthy (per the compose
+        # healthcheck) and fails the job if it doesn't within the timeout.
+        run: docker compose up -d --build --remove-orphans --wait --wait-timeout 240
+
+      - name: Smoke test
+        shell: bash
+        # Explicit readable gate on top of the healthcheck. The container maps
+        # 8080 on the host (the runner), so we hit it locally.
+        run: |
+          curl -fsS http://localhost:8080/ > /dev/null
+          curl -fsS http://localhost:8080/umbraco > /dev/null
+          echo "Smoke test passed."
+
+      - name: Dump diagnostics on failure
+        if: failure()
+        shell: bash
+        run: |
+          echo "::group::docker compose ps"
+          docker compose ps
+          echo "::endgroup::"
+          echo "::group::container logs (last 200 lines)"
+          docker compose logs --no-color --tail=200
+          echo "::endgroup::"
+
+      - name: Prune dangling images
+        if: always()
+        shell: bash
+        run: docker image prune -f
+
+      - name: Remove .env
+        if: always()
+        shell: bash
+        run: rm -f .env
