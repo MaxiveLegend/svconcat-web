@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Error 500 | SV Concat</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
+
+    <style>
+        :root {
+            --color-light: #ecebff;
+            --color-dark: #010014;
+            --color-bg-light: #bec0e3;
+            --color-primary: #3429fc;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Quicksand", sans-serif;
+            line-height: 1.25;
+            color: var(--color-dark);
+            background-color: var(--color-bg-light);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        img {
+            display: block;
+        }
+
+        .c-error {
+            display: flex;
+            align-items: center;
+            min-height: 100vh;
+            padding: 3rem 0;
+        }
+
+        .c-error__container {
+            width: 100%;
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .c-error__inner {
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .c-error__content,
+        .c-error__media {
+            flex: 1 1 0;
+        }
+
+        .c-error__image {
+            width: 100%;
+            height: auto;
+        }
+
+        .c-error__code {
+            margin: 0 0 1.5rem;
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 1.25;
+            color: var(--color-primary);
+        }
+
+        .c-error__lead {
+            margin: 0 0 1rem;
+            font-size: 26px;
+            font-weight: 600;
+        }
+
+        .c-error__text {
+            margin: 0 0 1rem;
+            font-size: 22px;
+            line-height: 1.25;
+        }
+
+        .c-error__contact {
+            margin: 0;
+            padding: 0;
+            font-size: 22px;
+            font-weight: 600;
+            list-style: none;
+        }
+
+        .c-error__contact a {
+            color: var(--color-primary);
+            text-decoration: none;
+        }
+
+        .c-error__contact a:hover,
+        .c-error__contact a:focus {
+            text-decoration: underline;
+        }
+
+        @media (min-width: 768px) {
+            .c-error__container {
+                padding: 0 40px;
+            }
+
+            .c-error__code {
+                font-size: 60px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .c-error__container {
+                padding: 0 48px;
+            }
+
+            .c-error__inner {
+                flex-direction: row;
+                gap: 4rem;
+            }
+        }
+
+        @media (min-width: 1440px) {
+            .c-error__container {
+                padding: 0 64px;
+            }
+        }
+    </style>
+</head>
+<body>
+<main>
+    <section class="c-error">
+        <div class="c-error__container">
+            <div class="c-error__inner">
+                <div class="c-error__content">
+                    <h1 class="c-error__code">Error 500</h1>
+                    <p class="c-error__lead">Oeps, daar ging even iets flink verkeerd...</p>
+                    <p class="c-error__text">
+                        Geen zorgen, het ligt niet aan jou, maar aan onze server. We zijn op de hoogte,
+                        en werken aan een oplossing.
+                    </p>
+                    <p class="c-error__text">
+                        Probeer het later opnieuw, of neem direct contact met ons op:
+                    </p>
+                    <ul class="c-error__contact">
+                        <li><a href="tel:+31638594908">06 385 94 908</a></li>
+                        <li><a href="mailto:info@svconcat.nl">info@svconcat.nl</a></li>
+                    </ul>
+                </div>
+
+                <div class="c-error__media">
+                    <img class="c-error__image" src="/dist/images/broken-robot.png"
+                         alt="Kapotte robot" width="880" height="460">
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

@@ -16,6 +16,24 @@ WebApplication app = builder.Build();
 
 await app.BootUmbracoAsync();
 
+// In production, serve the self-contained static 500 page for unhandled
+// exceptions. We send the file directly (no MVC/Razor rendering) so the page
+// works even when the failure is in Umbraco/the database. In development the
+// default developer exception page is kept for debugging.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler(errorApp =>
+    {
+        errorApp.Run(async context =>
+        {
+            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            context.Response.ContentType = "text/html; charset=utf-8";
+            await context.Response.SendFileAsync(
+                Path.Combine(app.Environment.WebRootPath, "error", "500.html"));
+        });
+    });
+}
+
 app.UseUmbraco()
     .WithMiddleware(u =>
     {
