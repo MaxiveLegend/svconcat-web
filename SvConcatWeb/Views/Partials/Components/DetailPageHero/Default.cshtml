@@ -17,5 +17,8 @@
         <h1 class="c-hero__title">@Model.Title</h1>
     </div>
 
-    <a class="c-button c-hero__cta" href="@Model.Cta.Url" target="@Model.Cta.Target">@Model.Cta.Name</a>
+    @if (Model.HasCta)
+    {
+        <a class="c-button c-hero__cta" href="@Model.Cta.Url" target="@Model.Cta.Target">@Model.Cta.Name</a>
+    }
 </section>

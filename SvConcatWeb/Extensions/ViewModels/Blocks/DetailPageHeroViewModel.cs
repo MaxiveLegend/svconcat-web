@@ -8,4 +8,6 @@ public class DetailPageHeroViewModel
     public string Subtitle { get; set; }
     public ImageViewModel Image { get; set; }
     public LinkViewModel Cta { get; set; }
+
+    public bool HasCta => !string.IsNullOrWhiteSpace(Cta?.Url);
 }

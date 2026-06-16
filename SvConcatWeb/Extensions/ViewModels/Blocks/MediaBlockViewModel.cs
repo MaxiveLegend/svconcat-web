@@ -8,4 +8,6 @@ public class MediaBlockViewModel
     public string Text { get; set; }
     public LinkViewModel Cta { get; set; }
     public ImageViewModel Media { get; set; }
+
+    public bool HasCta => !string.IsNullOrWhiteSpace(Cta?.Url);
 }

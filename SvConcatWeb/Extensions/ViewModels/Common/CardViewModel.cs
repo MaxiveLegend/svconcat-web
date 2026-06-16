@@ -10,5 +10,5 @@ public class CardViewModel
     
     public bool HasSubtitle => !string.IsNullOrEmpty(Subtitle);
     public bool HasDescription => !string.IsNullOrEmpty(Description);
-    public bool HasCta => !string.IsNullOrWhiteSpace(Cta.Url);
+    public bool HasCta => !string.IsNullOrWhiteSpace(Cta?.Url);
 }

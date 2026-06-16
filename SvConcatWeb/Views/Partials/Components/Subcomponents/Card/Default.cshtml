@@ -20,5 +20,8 @@
         </p>
     </div>
     
-    <a class="c-card__link" href="@Model.Cta.Url" target="@Model.Cta.Target">@Model.Cta.Name</a>
+    @if (Model.HasCta)
+    {
+        <a class="c-card__link" href="@Model.Cta.Url" target="@Model.Cta.Target">@Model.Cta.Name</a>
+    }
 </div>
