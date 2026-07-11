@@ -12,7 +12,9 @@ public class VideoBlockToVideoBlockViewModel(IVariationContextAccessor variation
     public VideoBlockViewModel Execute(VideoBlock source)
     {
         var vm = new VideoBlockViewModel();
-        
+
+        if (source == null) return vm;
+
         vm.VideoUrl = source.Video?.MediaUrl() ?? string.Empty;
         vm.StartTime = source.StartTime;
         vm.Duration = source.Duration;

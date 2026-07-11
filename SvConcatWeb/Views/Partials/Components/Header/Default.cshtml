@@ -4,14 +4,17 @@
 <header class="c-header">
     <nav class="c-header__nav row">
         <a class="c-header__nav__group col-3" href="@Model.WebsiteUrl">
-            <picture>
-                @foreach (var source in Model.WebsiteLogo.Sources)
-                {
-                    <source srcset="@source.Src" media="@source.MediaQuery"/>
-                }
-                <img src="@Model.WebsiteLogo.Url" alt="@Model.WebsiteLogo.Alt"
-                     width="192" height="52"/>
-            </picture>
+            @if (Model.WebsiteLogo.HasImage)
+            {
+                <picture>
+                    @foreach (var source in Model.WebsiteLogo.Sources)
+                    {
+                        <source srcset="@source.Src" media="@source.MediaQuery"/>
+                    }
+                    <img src="@Model.WebsiteLogo.Url" alt="@Model.WebsiteLogo.Alt"
+                         width="192" height="52"/>
+                </picture>
+            }
         </a>
     
         <div class="c-header__nav__group c-header__nav__group--main col-6">

@@ -5,27 +5,33 @@
     <div class="container">
         <div class="c-cards">
             
-            @if (Model.HasTitle && Model.HasBody)
+            @if (Model.HasTitle || Model.HasBody)
             {
                 <div class="c-cards__top row">
-                    <h2 class="c-cards__title col-12 col-md-5">
-                        @Model.Title
-                    </h2>
-                    
-                    <div class="c-cards__body col-12 offset-md-8 col-md-4">
-                        
-                        @if (Model.HasText)
-                        {
-                            @Model.Text
-                        }
-                        @if (Model.HasLink)
-                        {
-                            <a class="c-button" href="@Model.Cta.Url" target="@Model.Cta.Target">
-                                @Model.Cta.Name
-                            </a>
-                        }
-                        
-                    </div>
+                    @if (Model.HasTitle)
+                    {
+                        <h2 class="c-cards__title col-12 col-md-5">
+                            @Model.Title
+                        </h2>
+                    }
+
+                    @if (Model.HasBody)
+                    {
+                        <div class="c-cards__body col-12 offset-md-8 col-md-4">
+
+                            @if (Model.HasText)
+                            {
+                                @Model.Text
+                            }
+                            @if (Model.HasLink)
+                            {
+                                <a class="c-button" href="@Model.Cta.Url" target="@Model.Cta.Target">
+                                    @Model.Cta.Name
+                                </a>
+                            }
+
+                        </div>
+                    }
                 </div>
             }
             

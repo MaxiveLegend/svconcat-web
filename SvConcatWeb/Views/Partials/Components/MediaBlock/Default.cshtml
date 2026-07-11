@@ -13,17 +13,20 @@
                 }
             </div>
             
-            <div class="c-media__media">
-                <picture>
-                    
-                    @foreach (var src in Model.Media.Sources)
-                    {
-                        <source srcset="@src.Src" media="@src.MediaQuery">
-                    }
-                    
-                    <img src="@Model.Media.Url" alt="@Model.Media.Alt">
-                </picture>
-            </div>
+            @if (Model.Media.HasImage)
+            {
+                <div class="c-media__media">
+                    <picture>
+
+                        @foreach (var src in Model.Media.Sources)
+                        {
+                            <source srcset="@src.Src" media="@src.MediaQuery">
+                        }
+
+                        <img src="@Model.Media.Url" alt="@Model.Media.Alt">
+                    </picture>
+                </div>
+            }
         </div>
     </div>
 </section>
