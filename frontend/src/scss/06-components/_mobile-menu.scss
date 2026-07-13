@@ -1,0 +1,148 @@
+@use '../01-settings/typography' as *;
+@use '../02-tools/media-queries' as mq;
+
+// Standalone mobile navigation, shown only below `tablet`. Above it the component
+// is removed entirely and the desktop `.c-header` takes over. Toggled by the
+// `MobileMenu` behavior component, which adds/removes `.is-open`.
+.c-mobile-menu {
+  @include mq.media-breakpoint-up(tablet) {
+    display: none;
+  }
+
+  // Top bar: logo + hamburger, mirroring the desktop header styling.
+  &__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-block-size: var(--header-height);
+    padding-inline: 1rem;
+    background-color: var(--color-primary);
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    color: var(--color-light);
+  }
+
+  &__logo {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  &__toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: 44px;
+    min-block-size: 44px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--color-light);
+    cursor: pointer;
+
+    &-icon {
+      font-size: 1.75rem;
+    }
+
+    &:hover,
+    &:focus-visible {
+      color: var(--color-secondary);
+    }
+  }
+
+  &__overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 19;
+    background-color: rgb(1 0 20 / 50%); // --color-dark @ 50%
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity var(--transition-duration) var(--transition-ease),
+      visibility var(--transition-duration) var(--transition-ease);
+
+    &.is-open {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  // Off-canvas panel sliding in from the right.
+  &__drawer {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    inline-size: min(20rem, 85vw);
+    block-size: 100dvh;
+    padding: 1.5rem;
+    background-color: var(--color-primary);
+    color: var(--color-light);
+    overflow-y: auto;
+    box-shadow: -8px 0 24px rgb(1 0 20 / 25%); // --color-dark, softened
+    transform: translateX(100%);
+    transition: transform var(--transition-duration) var(--transition-ease);
+
+    &.is-open {
+      transform: translateX(0);
+    }
+  }
+
+  &__close {
+    align-self: flex-end;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: 44px;
+    min-block-size: 44px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--color-light);
+    cursor: pointer;
+
+    &-icon {
+      font-size: 1.75rem;
+    }
+
+    &:hover,
+    &:focus-visible {
+      color: var(--color-secondary);
+    }
+  }
+
+  &__links {
+    display: flex;
+    flex-direction: column;
+
+    // Push the external links to the bottom, visually separated from the primary nav.
+    &--secondary {
+      margin-block-start: auto;
+      padding-block-start: 1rem;
+      border-block-start: 1px solid rgb(236 235 255 / 20%); // --color-light @ 20%
+    }
+  }
+
+  &__link {
+    text-decoration: none;
+    color: var(--color-light);
+    font-weight: $font-weight-bold;
+    font-size: $font-large;
+    padding-block: 0.75rem;
+
+    &:hover,
+    &:focus {
+      color: var(--color-secondary);
+    }
+
+    &:active {
+      color: var(--color-secondary-dark);
+    }
+
+    &--active {
+      color: var(--color-secondary);
+    }
+  }
+}

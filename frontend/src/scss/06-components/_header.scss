@@ -2,6 +2,10 @@
 @use '../02-tools/media-queries' as mq;
 
 .c-header {
+  // Below `tablet` the standalone `.c-mobile-menu` component takes over, so the
+  // desktop header only renders from `tablet` up. All desktop layout below is
+  // unchanged from the original.
+  display: none;
   background-color: var(--color-primary);
   min-height: var(--header-height);
   flex-shrink: 0;
@@ -11,6 +15,7 @@
   z-index: 1;
 
   @include mq.media-breakpoint-up(tablet) {
+    display: block;
     height: var(--header-height);
   }
   

@@ -1,0 +1,60 @@
+@using SvConcatWeb.Extensions.ViewModels.Common
+@model HeaderViewModel
+
+@{
+    var currentUrl = Model.CurrentPage?.Url().ToLower().TrimEnd('/');
+}
+
+@* Standalone navigation for viewports below the `tablet` breakpoint. The desktop
+   `.c-header` is hidden there and this component takes over entirely. *@
+<div class="c-mobile-menu" data-component="MobileMenu">
+    <div class="c-mobile-menu__bar">
+        <a class="c-mobile-menu__logo" href="@Model.WebsiteUrl">
+            @if (Model.WebsiteLogo.HasImage)
+            {
+                <picture>
+                    @foreach (var source in Model.WebsiteLogo.Sources)
+                    {
+                        <source srcset="@source.Src" media="@source.MediaQuery"/>
+                    }
+                    <img src="@Model.WebsiteLogo.Url" alt="@Model.WebsiteLogo.Alt"
+                         width="192" height="52"/>
+                </picture>
+            }
+        </a>
+
+        <button class="c-mobile-menu__toggle" type="button" aria-controls="c-mobile-menu-drawer" aria-expanded="false">
+            <span class="u-visually-hidden">Menu openen</span>
+            <svg class="c-icon c-mobile-menu__toggle-icon" aria-hidden="true"><use href="/dist/images/icons/sprite.svg#bars"></use></svg>
+        </button>
+    </div>
+
+    <div class="c-mobile-menu__overlay" data-mobile-menu-overlay></div>
+
+    <nav id="c-mobile-menu-drawer" class="c-mobile-menu__drawer" aria-label="Mobiele navigatie">
+        <button class="c-mobile-menu__close" type="button">
+            <span class="u-visually-hidden">Menu sluiten</span>
+            <svg class="c-icon c-mobile-menu__close-icon" aria-hidden="true"><use href="/dist/images/icons/sprite.svg#xmark"></use></svg>
+        </button>
+
+        <div class="c-mobile-menu__links">
+            @foreach (var navItem in Model.MainNavItems)
+            {
+                var linkUrl = navItem.Url?.ToLower().TrimEnd('/');
+
+                <a class="c-mobile-menu__link @Html.If(currentUrl != null && currentUrl.Equals(linkUrl), "c-mobile-menu__link--active")"
+                   href="@navItem.Url"
+                   target="@navItem.Target">
+                    @navItem.Name
+                </a>
+            }
+        </div>
+
+        <div class="c-mobile-menu__links c-mobile-menu__links--secondary">
+            @foreach (var externalLink in Model.ExternalLinks)
+            {
+                <a class="c-mobile-menu__link" href="@externalLink.Url" target="@externalLink.Target">@externalLink.Name</a>
+            }
+        </div>
+    </nav>
+</div>

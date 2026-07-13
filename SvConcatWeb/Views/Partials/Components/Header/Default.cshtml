@@ -1,6 +1,10 @@
 @using SvConcatWeb.Extensions.ViewModels.Common
 @inherits UmbracoViewPage<HeaderViewModel>
 
+@{
+    var currentUrl = Model.CurrentPage?.Url().ToLower().TrimEnd('/');
+}
+
 <header class="c-header">
     <nav class="c-header__nav row">
         <a class="c-header__nav__group col-3" href="@Model.WebsiteUrl">
@@ -16,21 +20,20 @@
                 </picture>
             }
         </a>
-    
+
         <div class="c-header__nav__group c-header__nav__group--main col-6">
             @foreach (var navItem in Model.MainNavItems)
             {
-                var currentUrl = Model.CurrentPage.Url().ToLower().TrimEnd('/');
                 var linkUrl = navItem.Url?.ToLower().TrimEnd('/');
-    
-                <a class="c-header__nav__link @Html.If(currentUrl.Equals(linkUrl), "c-header__nav__link--active")"
+
+                <a class="c-header__nav__link @Html.If(currentUrl != null && currentUrl.Equals(linkUrl), "c-header__nav__link--active")"
                    href="@navItem.Url"
                    target="@navItem.Target">
                     @navItem.Name
                 </a>
             }
         </div>
-    
+
         <div class="c-header__nav__group c-header__nav__group--secondary col-3">
             @foreach (var externalLink in Model.ExternalLinks)
             {
@@ -39,3 +42,5 @@
         </div>
     </nav>
 </header>
+
+@await Html.PartialAsync("Components/Header/MobileMenu", Model)

@@ -6,4 +6,6 @@ export default {
     "chevron-left": "solid/chevron-left",
     "chevron-right": "solid/chevron-right",
     "play": "solid/play",
+    "bars": "solid/bars",
+    "xmark": "solid/xmark",
 };
