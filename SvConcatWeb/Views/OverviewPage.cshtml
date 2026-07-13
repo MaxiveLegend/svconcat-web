@@ -1,5 +1,5 @@
-﻿@inherits UmbracoViewPage<SvConcatWeb.Extensions.Models.MasterModel<OverviewPage>>
-@using Umbraco.Cms.Web.Common.PublishedModels
+﻿@using SvConcatWeb.Extensions.Models
+@inherits UmbracoViewPage<MasterModel<OverviewPage>>
 
 @{
     Layout = "Master.cshtml";
@@ -22,6 +22,10 @@
     var minYear = availableYears.Count > 0 ? availableYears.First() : fallbackYear;
     var maxYear = availableYears.Count > 0 ? availableYears.Last() : fallbackYear;
     var currentYear = maxYear;
+
+    // Read by alias (like eventDate) so it compiles before/after ModelsBuilder
+    // regenerates; fall back to the old hardcoded label for not-yet-filled pages.
+    var overviewHeading = Model.Content.Value<string>("overviewHeading");
 }
 
 @Html.GetBlockListHtml(Model.Content.Hero)
@@ -38,8 +42,11 @@
              data-overview-page-size="@pageSize"
              data-overview-ordering="newest">
             <div class="c-overview__top">
-                <h2>Evenementen</h2> @* TODO: get from dictionary *@
-                
+                @if (!string.IsNullOrWhiteSpace(overviewHeading))
+                {
+                    <h2>@overviewHeading</h2>
+                }
+
                 <div class="c-overview__facets">
                     <div class="c-overview__facets__year">
                         <button type="button" data-overview-year-decrement aria-label="Vorig jaar">

@@ -163,7 +163,12 @@ Images are built by `ExtensionMethods.CreateImageItem(...)` → `ImageViewModel`
 ### 1.3 Views (`SvConcatWeb/Views/`)
 - `Master.cshtml` — root layout (`Layout=null`), `<html lang="nl">`. Links
   `/dist/styles.css`, Google font Quicksand, `/dist/main.js`; renders Header +
-  `@RenderBody()` + Footer view components. Title = `SeoTitle | SeoSiteName`.
+  `@RenderBody()` + Footer view components. Head implements the full SEO surface
+  from the `IMasterModel` SEO fields: `<title>` (`SeoTitle | SeoSiteName`), meta
+  description, robots, canonical link, and Open Graph + Twitter Card tags — each
+  behind a `string.IsNullOrWhiteSpace` guard so empty CMS values emit no blank
+  tags (twitter:card switches summary↔summary_large_image on social image).
+  Also emits the favicon link set (see §2.4).
 - Page templates (`Layout = "Master.cshtml"`), each `UmbracoViewPage<MasterModel<T>>`:
   - `ContentPage.cshtml` — Hero blocklist + Content blocklist.
   - `OverviewDetailPage.cshtml` — Hero + Content blocklists.
@@ -174,9 +179,9 @@ Images are built by `ExtensionMethods.CreateImageItem(...)` → `ImageViewModel`
 - Partials tree: `Components/<Block>/Default.cshtml`, `Subcomponents/Card/Default.cshtml`,
   shared `common/{Cta,Image,Video}.cshtml`, `blockgrid/`, `blocklist/`,
   `singleblock/`, `richtext/Components/`.
-- **UI text is currently hardcoded Dutch** with `@* TODO: get from dictionary *@`
-  markers (e.g. "Evenementen", ordering labels) — dictionary/localization not
-  yet wired.
+- **Some UI text is still hardcoded Dutch** with `@* TODO: get from dictionary *@`
+  markers (e.g. the ordering select labels) — dictionary/localization not yet
+  wired. (The overview list heading is now a CMS-managed `title` property.)
 
 ### 1.4 The Overview feature (events listing)
 A paginated, filterable events list. Server renders the shell + hero; the list
@@ -188,7 +193,11 @@ body is fetched and rendered client-side.
 - **View shell** (`OverviewPage.cshtml`): reads distinct child event years from
   the published cache to compute `min/max/current` year; emits a
   `data-component="Overview"` container with endpoint, `pageKey` (`Model.Content.Key`),
-  year bounds, page size (12), and default ordering (`newest`).
+  year bounds, page size (12), and default ordering (`newest`). The list heading
+  is a per-page `overviewHeading` property (read by alias
+  `Model.Content.Value<string>("overviewHeading")`, falling back to "Evenementen"
+  when empty) — no longer hardcoded. (Named `overviewHeading`, not `title`, to
+  avoid confusion with the hero's own title.)
 - **API** (`OverviewApiController` @ `GET /umbraco/api/overview/items`): query
   params `pageKey` (Guid, required), `year`, `ordering` (`newest`/`oldest`),
   `page` (default 1), `pageSize` (default 12). Returns `OverviewResultViewModel`
@@ -216,7 +225,8 @@ git; the DB itself is not). Format `10.7.0`, uSync `17.0.4`.
   externalLinks), footer (columns = BlockList), SEO, home-page picker
   (`umbracoInternalRedirectId`).
 - `contentPage` — Hero + Content block lists (composes `seo`).
-- `overviewPage` — Hero + list of `overviewDetailPage` children.
+- `overviewPage` — `overviewHeading` (TextBoxMax60, the list heading) + Hero +
+  list of `overviewDetailPage` children.
 - `overviewDetailPage` — Hero + Content + `eventDate`; composes `card` + `seo`.
 - `data`, `councilMember`, `councilMembers`, `sponsor`, `sponsors` — content
   types that exist in the schema but currently have **no templates/viewmodels**
@@ -348,7 +358,14 @@ ITCSS-style numbered layers, imported in order by `main.scss` via `@use`:
   `public/images/icons/sprite.svg` (Vite then copies `public/` into `dist/`).
 - Markup references icons as
   `<use href="/dist/images/icons/sprite.svg#chevron-left">`.
-- `public/images/broken-robot.png` and site favicon/thumbnails also served.
+- `public/images/broken-robot.png` and block thumbnails also served.
+- **Favicon set** lives in `public/images/icons/` (sourced from the old
+  svconcat.nl site): `favicon.ico`, `favicon-16x16.png`, `favicon-32x32.png`,
+  `apple-touch-icon.png`, `safari-pinned-tab.svg`, `android-chrome-{192,512}.png`,
+  and `site.webmanifest` (its icon `src`s point at `/dist/images/icons/...`).
+  Built into `/dist/images/icons/` and linked from `Master.cshtml`. A copy of
+  `favicon.ico` also sits at `wwwroot/favicon.ico` (committed) to satisfy the
+  browser's implicit `/favicon.ico` request independent of the dist build.
 
 ### 2.5 How .NET consumes the frontend
 - Vite writes `main.js`, `styles.css`, and copied `public/` assets into
@@ -461,8 +478,8 @@ ITCSS-style numbered layers, imported in order by `main.scss` via `@use`:
   comment saying to remove/gate it before prod.
 - Several document types (`councilMember(s)`, `sponsor(s)`, `data`) exist in the
   schema but have **no templates/viewmodels** — likely unfinished features.
-- UI strings are **hardcoded Dutch** with `TODO: get from dictionary` markers;
-  localization/dictionary is not wired yet.
+- Some UI strings remain **hardcoded Dutch** with `TODO: get from dictionary`
+  markers (overview ordering labels); localization/dictionary is not wired yet.
 - Prod build ships **unminified JS/CSS with sourcemaps** (`minify:false`,
   `sourcemap:true`) — intentional for now, but worth revisiting for prod perf.
 - Leftover `console.log("Playing video...")` in `video.js`.

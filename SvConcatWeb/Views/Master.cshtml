@@ -8,7 +8,62 @@
 
 <html lang="nl">
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>@Model.SeoTitle | @Model.SeoSiteName</title>
+
+    @* Each field renders behind a guard so empty CMS values never emit blank tags. *@
+    @if (!string.IsNullOrWhiteSpace(Model.SeoDescription))
+    {
+        <meta name="description" content="@Model.SeoDescription">
+    }
+    @if (!string.IsNullOrWhiteSpace(Model.SeoRobots))
+    {
+        <meta name="robots" content="@Model.SeoRobots">
+    }
+    @if (!string.IsNullOrWhiteSpace(Model.SeoCanonical))
+    {
+        <link rel="canonical" href="@Model.SeoCanonical">
+    }
+
+    @* Open Graph *@
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="@Model.SeoTitle">
+    <meta property="og:site_name" content="@Model.SeoSiteName">
+    @if (!string.IsNullOrWhiteSpace(Model.SeoDescription))
+    {
+        <meta property="og:description" content="@Model.SeoDescription">
+    }
+    @if (!string.IsNullOrWhiteSpace(Model.SeoCanonical))
+    {
+        <meta property="og:url" content="@Model.SeoCanonical">
+    }
+    @if (!string.IsNullOrWhiteSpace(Model.SeoSocialImage))
+    {
+        <meta property="og:image" content="@Model.SeoSocialImage">
+    }
+
+    @* Twitter *@
+    <meta name="twitter:card" content="@(string.IsNullOrWhiteSpace(Model.SeoSocialImage) ? "summary" : "summary_large_image")">
+    <meta name="twitter:title" content="@Model.SeoTitle">
+    @if (!string.IsNullOrWhiteSpace(Model.SeoDescription))
+    {
+        <meta name="twitter:description" content="@Model.SeoDescription">
+    }
+    @if (!string.IsNullOrWhiteSpace(Model.SeoSocialImage))
+    {
+        <meta name="twitter:image" content="@Model.SeoSocialImage">
+    }
+
+    @* Favicons live in frontend/public/images/icons and build into /dist; the root
+       favicon.ico also covers browsers' implicit /favicon.ico request. *@
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="/dist/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/dist/images/icons/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/dist/images/icons/apple-touch-icon.png">
+    <link rel="mask-icon" href="/dist/images/icons/safari-pinned-tab.svg" color="#2b23ff">
+    <link rel="manifest" href="/dist/images/icons/site.webmanifest">
 
     <link rel="stylesheet" href="/dist/styles.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
