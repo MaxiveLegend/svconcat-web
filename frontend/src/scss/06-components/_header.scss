@@ -1,35 +1,60 @@
 @use '../01-settings/typography' as *;
+@use '../02-tools/media-queries' as mq;
 
 .c-header {
   background-color: var(--color-primary);
-  height: var(--header-height);
+  min-height: var(--header-height);
   flex-shrink: 0;
   padding-inline: 1rem;
   border-radius: 0 0 var(--border-radius) var(--border-radius);
   color: var(--color-light);
   z-index: 1;
+
+  @include mq.media-breakpoint-up(tablet) {
+    height: var(--header-height);
+  }
   
   &__nav {
-    height: 100%;
+    // Mobile: the shared `.row` grid would cram the logo + nav groups into a
+    // 12-col track. Stack them instead so links stay tappable and never overflow.
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding-block: 0.75rem;
 
-    // The header is a full-width bar, so its 12-col grid must always fill the
-    // available width. Without this, the shared `.row` desktop-large rule caps
-    // columns at `minmax(0, 80px)`, leaving empty space on the right between
-    // ~1520px and the `wide` (1728px) breakpoint.
-    grid-template-columns: repeat(12, 1fr);
+    @include mq.media-breakpoint-up(tablet) {
+      display: grid;
+
+      // The header is a full-width bar, so its 12-col grid must always fill the
+      // available width. Without this, the shared `.row` desktop-large rule caps
+      // columns at `minmax(0, 80px)`, leaving empty space on the right between
+      // ~1520px and the `wide` (1728px) breakpoint.
+      grid-template-columns: repeat(12, 1fr);
+      height: 100%;
+      padding-block: 0;
+    }
     
     &__group {
       display: flex;
       align-items: center;
       gap: 1rem;
-      height: 100%;
+
+      @include mq.media-breakpoint-up(tablet) {
+        height: 100%;
+      }
       
       &.c-header__nav__group--main {
+        flex-wrap: wrap;
         justify-content: center;
       }
       
       &.c-header__nav__group--secondary {
-        justify-content: end;
+        justify-content: center;
+
+        @include mq.media-breakpoint-up(tablet) {
+          justify-content: end;
+        }
       }
     }
     
@@ -37,12 +62,19 @@
       text-decoration: none;
       color: var(--color-light);
       font-weight: $font-weight-bold;
-      font-size: $font-large;
-      padding-inline: 1rem;
-      height: 100%;
+      font-size: $font-base;
+      padding-inline: 0.75rem;
+      padding-block: 0.5rem;
       display: flex;
       align-items: center;
       position: relative;
+
+      @include mq.media-breakpoint-up(tablet) {
+        font-size: $font-large;
+        padding-inline: 1rem;
+        padding-block: 0;
+        height: 100%;
+      }
       
       &:hover,
       &:focus{

@@ -1,4 +1,5 @@
 @use '../01-settings/typography' as *;
+@use '../02-tools/media-queries' as mq;
 
 .c-hero {
   width: 100%;
@@ -14,16 +15,29 @@
     z-index: -1;
     
     img {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
     }
   }
   
   &__body {
     position: absolute;
-    width: fit-content;
+
+    // Keep the copy clear of the rounded corners and aligned with the grid
+    // gutter on mobile; the wider desktop insets come in at the tablet breakpoint.
+    left: 1.25rem;
+    right: 1.25rem;
+    bottom: 2.5rem;
+    width: auto;
     height: fit-content;
-    left: 4.75rem;
-    bottom: 5.875rem;
+
+    @include mq.media-breakpoint-up(tablet) {
+      left: 4.75rem;
+      right: auto;
+      bottom: 5.875rem;
+      width: fit-content;
+    }
     
     h1,
     p {
@@ -46,8 +60,12 @@
     }
     
     .c-hero__body {
-      left: 4.75rem;
+      left: 1.25rem;
       bottom: 2.625rem;
+
+      @include mq.media-breakpoint-up(tablet) {
+        left: 4.75rem;
+      }
     }
     
     .c-hero__cta {
@@ -55,7 +73,11 @@
       bottom: 0;
       right: 0;
       border-radius: var(--border-radius) 0 0 0;
-      padding: 1.5rem;
+      padding: 1rem;
+
+      @include mq.media-breakpoint-up(tablet) {
+        padding: 1.5rem;
+      }
     }
   }
 }

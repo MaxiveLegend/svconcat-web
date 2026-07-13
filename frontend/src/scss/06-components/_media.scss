@@ -1,7 +1,15 @@
+@use '../02-tools/media-queries' as mq;
+
 .c-media {
   display: flex;
-  justify-content: space-between;
-  gap: 4rem;
+  flex-direction: column;
+  gap: 2rem;
+
+  @include mq.media-breakpoint-up(tablet) {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 4rem;
+  }
   
   &__body {
     display: flex;
@@ -10,12 +18,15 @@
   }
   
   &__media {
-    max-width: 32rem;
     border-radius: var(--border-radius);
     overflow: hidden;
+
+    @include mq.media-breakpoint-up(tablet) {
+      max-width: 32rem;
+    }
     
     img {
-      max-width: 100%;
+      width: 100%;
     }
   }
 }

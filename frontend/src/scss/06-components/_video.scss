@@ -1,3 +1,5 @@
+@use '../02-tools/media-queries' as mq;
+
 .c-video {
   width: 100%;
   height: fit-content;
@@ -37,12 +39,17 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 150px;
-      height: 150px;
+      width: 84px;
+      height: 84px;
       border-radius: var(--border-radius);
       background-color: var(--color-secondary);
       color: var(--color-light);
       z-index: 3;
+
+      @include mq.media-breakpoint-up(tablet) {
+        width: 150px;
+        height: 150px;
+      }
       
       &:hover {
         background-color: var(--color-secondary-dark);
@@ -50,9 +57,14 @@
     }
     
     .c-video__play-icon {
-      inline-size: 50px;
-      block-size: 50px;
+      inline-size: 32px;
+      block-size: 32px;
       margin-inline-start: 0.5rem; // optical centering of the triangle
+
+      @include mq.media-breakpoint-up(tablet) {
+        inline-size: 50px;
+        block-size: 50px;
+      }
     }
   }
 }

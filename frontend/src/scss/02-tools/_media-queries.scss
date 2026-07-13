@@ -31,7 +31,7 @@
 @mixin media-breakpoint-down($name) {
   $breakpoint: breakpoint-value($name);
   @if $breakpoint {
-    @media (max-width: #{$breakpoint  0.02px}) { // small adjustment to prevent overlap with min-width queries
+    @media (max-width: #{$breakpoint - 0.02px}) { // small adjustment to prevent overlap with min-width queries
       @content;
     }
   }

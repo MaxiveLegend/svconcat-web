@@ -1,5 +1,11 @@
+@use '../02-tools/media-queries' as mq;
+
 .c-rte {
-  width: 75%;
+  width: 100%;
+
+  @include mq.media-breakpoint-up(desktop) {
+    width: 75%;
+  }
   
   ul,
   ol {

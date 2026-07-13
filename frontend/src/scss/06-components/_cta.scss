@@ -1,3 +1,5 @@
+@use '../02-tools/media-queries' as mq;
+
 .c-cta {
   display: flex;
   flex-direction: column;
@@ -5,6 +7,17 @@
   
   &__buttons{
     display: flex;
+    flex-wrap: wrap;
     gap: 1rem;
+
+    // Stack to comfortable full-width tap targets on phones.
+    .c-button {
+      width: 100%;
+      text-align: center;
+
+      @include mq.media-breakpoint-up(tablet) {
+        width: fit-content;
+      }
+    }
   }
 }

@@ -1,18 +1,32 @@
 @use '../01-settings/typography' as *;
+@use '../02-tools/media-queries' as mq;
 
 .c-footer {
   background-color: var(--color-primary);
-  height: var(--footer-height);
   border-radius: var(--border-radius) var(--border-radius) 0 0;
   display: flex;
   align-items: center;
   justify-content: space-around;
   width: 100%;
   flex-shrink: 0;
+  padding-block: 2.5rem;
+
+  @include mq.media-breakpoint-up(tablet) {
+    height: var(--footer-height);
+    padding-block: 0;
+  }
   
   &__columns {
     display: flex;
-    gap: 8rem;
+    flex-direction: column;
+    gap: 2.5rem;
+    padding-inline: 1.5rem;
+
+    @include mq.media-breakpoint-up(tablet) {
+      flex-direction: row;
+      gap: 8rem;
+      padding-inline: 0;
+    }
   }
   
   &__column {
