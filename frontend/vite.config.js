@@ -28,8 +28,12 @@ export default defineConfig({
                 styles: resolve(__dirname, 'src/scss/main.scss'),
             },
             output: {
+                // Entry + CSS keep stable names (referenced from Master.cshtml with
+                // asp-append-version for cache-busting). Lazy-loaded component chunks
+                // are content-hashed so an updated component can never be served stale
+                // from a browser/proxy cache; main.js imports them by their hashed name.
                 entryFileNames: '[name].js',
-                chunkFileNames: '[name].js',
+                chunkFileNames: '[name]-[hash].js',
                 assetFileNames: '[name].[ext]',
                 format: 'es',
             },

@@ -65,10 +65,13 @@
     <link rel="mask-icon" href="/dist/images/icons/safari-pinned-tab.svg" color="#2b23ff">
     <link rel="manifest" href="/dist/images/icons/site.webmanifest">
 
-    <link rel="stylesheet" href="/dist/styles.css">
+    @* asp-append-version appends a content hash (?v=...) so browsers/proxies fetch
+       fresh bundles after each deploy. The output filenames are stable/unhashed,
+       so without this a cached main.js/styles.css goes stale against new markup. *@
+    <link rel="stylesheet" href="/dist/styles.css" asp-append-version="true">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
 
-    <script src="/dist/main.js"></script>
+    <script src="/dist/main.js" asp-append-version="true"></script>
 </head>
 <body>
 
