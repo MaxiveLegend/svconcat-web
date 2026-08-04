@@ -70,3 +70,12 @@ frontend/public/images/icons/sprite.svg
 **/wwwroot/dist/
 **/uSync/**/Content
 **/uSync/**/Media
+
+# Local bind-mount targets for the Umbraco SQLite DB + uploaded media. Never
+# commit these: the repo is public and the DB holds content and admin hashes.
+/umbraco-data/
+/umbraco-media/
+
+# Local-only compose overrides (bind mounts for dev). Must stay uncommitted so
+# CI never bind-mounts data into the deploy directory it wipes each run.
+docker-compose.override.yml

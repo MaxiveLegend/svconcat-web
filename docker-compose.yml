@@ -33,11 +33,17 @@ services:
       - Umbraco__CMS__Unattended__UnattendedUserName
       - Umbraco__CMS__Unattended__UnattendedUserEmail
       - Umbraco__CMS__Unattended__UnattendedUserPassword
+    # NOTE: named volumes, NOT bind mounts under the compose file's directory.
+    # CI recreates the deploy directory on every run, so anything stored inside
+    # it would be deleted on each deploy. For local bind mounts use
+    # docker-compose.override.yml (gitignored) instead.
     volumes:
       # SQLite DB, Examine indexes, NuCache, TEMP.
       - umbraco-data:/app/umbraco/Data
       # Uploaded media.
       - umbraco-media:/app/wwwroot/media
+      # Serilog trace logs, kept across container recreation.
+      - umbraco-logs:/app/umbraco/Logs
     # Health is what `docker compose up --wait` (in CI) blocks on. start_period
     # gives Umbraco room to run its first-boot DB migration before failures count.
     healthcheck:
@@ -50,3 +56,4 @@ services:
 volumes:
   umbraco-data:
   umbraco-media:
+  umbraco-logs:

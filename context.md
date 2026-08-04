@@ -9,6 +9,8 @@ Dockerized and deployed via a manual GitHub Actions workflow to self-hosted runn
   `SvConcatWeb/wwwroot/dist`.
 - Root — `Dockerfile`, `docker-compose.yml`, `.env.example`, `.github/workflows/`,
   `SvConcatWeb.slnx` (solution referencing the single csproj).
+- `deploy/runner/` — compose file for the self-hosted Actions runner container
+  (lives on the separate services VM; not part of the app image).
 
 ---
 
@@ -419,8 +421,19 @@ ITCSS-style numbered layers, imported in order by `main.scss` via `@use`:
     `ASPNETCORE_FORWARDEDHEADERS_ENABLED=true`,
     `Umbraco__CMS__Global__UseHttps` (default `true`; set false for local plain-HTTP),
     `Umbraco__CMS__Unattended__InstallUnattended=true` + `UnattendedUserName/Email/Password`.
-- **Volumes** (persistence): `umbraco-data → /app/umbraco/Data` (SQLite DB,
-  Examine indexes, NuCache, TEMP) and `umbraco-media → /app/wwwroot/media`.
+- **Volumes** (persistence, all **named** volumes): `umbraco-data →
+  /app/umbraco/Data` (SQLite DB, Examine indexes, NuCache, TEMP),
+  `umbraco-media → /app/wwwroot/media`, and `umbraco-logs →
+  /app/umbraco/Logs` (Serilog trace logs kept across container recreation).
+- **Bind mounts must never appear in the committed compose file**: CI recreates
+  the deploy directory each run, so data stored under it would be deleted every
+  deploy. Local bind mounts live in `docker-compose.override.yml`, which is
+  **gitignored** and therefore absent from `git archive` (compose merges
+  overrides by mount target, so the local file swaps the data/media volumes for
+  `./umbraco-data` and `./umbraco-media` while logs stay a named volume).
+- With `COMPOSE_PROJECT_NAME=svconcat`, the server-side volumes are
+  `svconcat_umbraco-data`, `svconcat_umbraco-media`, `svconcat_umbraco-logs` —
+  the names any restored backup must be unpacked into.
 - **Healthcheck**: `curl http://localhost:8080/` (15s interval, 5 retries,
   90s start_period to allow first-boot migration). CI's `--wait` blocks on this.
 
@@ -432,25 +445,77 @@ ITCSS-style numbered layers, imported in order by `main.scss` via `@use`:
   these come from GitHub Actions secrets/vars, not a `.env` file. **No secret
   values are stored in the repo.**
 
+### Deployment topology (IMPORTANT)
+The runner is **not** the deploy host. Three VMs:
+- Two **Alpine** app VMs (one per environment: testing, production) running only
+  Docker + compose. No runner, no source checkout of their own.
+- One **Alpine** services VM running Portainer, hosting a single always-on
+  containerized GitHub Actions runner (`deploy/runner/docker-compose.yml`,
+  image `myoung34/github-runner`, label `deploy-runner`, PAT-based
+  re-registration). Deployed as a Portainer stack, so `RUNNER_ACCESS_TOKEN` is
+  supplied as a stack environment variable rather than via a `.env` file.
+  That token is a **PAT** (fine-grained: *Administration: Read and write* on
+  this repo; classic: `repo` scope) — the container exchanges it for a fresh,
+  short-lived registration token on every start. A one-hour registration token
+  from the "Add runner" page will not survive restarts.
+- The runner has **no `/var/run/docker.sock` mount on purpose**: every docker
+  command runs on the app VMs over SSH, so a job can never become root on the
+  services VM. It only needs git/ssh/tar/curl.
+- **App VM host prep oddity**: the `deploy` user is created with `adduser -D`
+  (no password), so it can only be reached by SSH key — the public key has to be
+  written into `/home/deploy/.ssh/authorized_keys` **as root from the VM's own
+  console**. `ssh-copy-id` does not work here (it needs password auth, and its
+  BusyBox `expr`/`mktemp` behaviour differs from GNU). The private half belongs
+  only in the `DEPLOY_SSH_KEY` secret; no app VM needs a copy of it.
+- **Key flow**: the private key is stored *only* as the `DEPLOY_SSH_KEY` secret.
+  The workflow writes it to `$RUNNER_TEMP` at the start of each job and deletes
+  it in an `always()` step, so the services VM never keeps a key on disk and
+  rotation means editing one secret. The services VM therefore needs **no**
+  manual SSH setup — only network reachability to each app VM on port 22 *from
+  inside the runner container* (Docker bridge networking, not just the host).
+
 ### CI/CD (`.github/workflows/deploy.yml`)
 - Single `Deploy` workflow, **manual only** (`workflow_dispatch`) with an
   `environment` dropdown input (e.g. `production`, `testing`). No auto-deploy on push.
-- Runs on **self-hosted** runners labelled `[self-hosted, deploy-runner, <env>]`;
-  uses the matching GitHub Environment for scoped vars/secrets + protection rules.
+- Runs on `[self-hosted, deploy-runner]` — **one** runner for all environments
+  (no per-env label anymore); the GitHub Environment still scopes
+  vars/secrets/protection rules.
 - Concurrency grouped per-environment (`cancel-in-progress: false`).
 - Steps: checkout → resolve `ASPNETCORE_ENVIRONMENT` (capitalize env name) →
-  **validate** admin email/password are present (fail fast, values never echoed
-  since the repo is public) → **build & deploy** via
-  `docker compose up -d --build --remove-orphans --wait --wait-timeout 240`
-  (secrets injected as real env vars, consumed by compose pass-through) →
-  **smoke test** (`curl /` and `/umbraco`) → dump diagnostics on failure →
-  `docker image prune -f` always.
-- Admin name/email are GitHub **variables**; the password is a **secret**.
+  **validate** host/SSH key/admin email/password (fail fast, values never echoed
+  since the repo is public) → **configure SSH** (key written to `$RUNNER_TEMP`
+  only, `known_hosts` from `vars.DEPLOY_KNOWN_HOSTS` with an ssh-keyscan
+  fallback + warning) → **ship source** (`git archive HEAD` piped over ssh into a
+  wiped `$DEPLOY_DIR`, so deleted files can't linger in the build context) →
+  **build & deploy remotely** (`docker compose up -d --build --remove-orphans
+  --wait --wait-timeout 240` on the app VM) → **smoke test** → optional public
+  URL check → diagnostics on failure → remote `docker image prune -f` → wipe the
+  SSH key.
+- **Secret transport oddity**: the remote script is piped to `ssh … sh -s` on
+  **stdin** (not argv, so secrets never hit the app VM's process list) and each
+  admin value is embedded **base64-encoded** and decoded remotely. Base64 is
+  shell-metacharacter-free, so a literal `$` in the password survives — the same
+  concern that made compose use pass-through env keys.
+- Smoke test runs `curl` **inside the container** (`docker compose exec -T web`)
+  because the Alpine hosts have no curl of their own.
+- `COMPOSE_PROJECT_NAME=svconcat` is set explicitly so volumes are always
+  `svconcat_umbraco-data` / `svconcat_umbraco-media` regardless of the deploy
+  directory name (restored backups must match these names).
+- `$DEPLOY_DIR` (default `svconcat/app`, relative to the deploy user's home) is
+  **disposable** and recreated per deploy; all state lives in the named volumes.
+- All three admin values are read from `secrets.*` (`UMBRACO_ADMIN_NAME`,
+  `_EMAIL`, `_PASSWORD`), not `vars.*`.
+- Per-environment config: `vars.DEPLOY_HOST` (required), `vars.DEPLOY_USER`
+  (default `deploy`), `vars.DEPLOY_PORT` (default 22), `vars.DEPLOY_DIR`,
+  `vars.DEPLOY_KNOWN_HOSTS`, `vars.DEPLOY_PUBLIC_URL` (optional), and
+  `secrets.DEPLOY_SSH_KEY`.
+- The app VM builds the image itself (no registry), so those hosts need a few GB
+  of free disk for SDK/node layers — hence the always-on remote prune step.
 
 ### Other tooling / files
 - `.dockerignore` — excludes build outputs, `node_modules`, the generated sprite,
   `wwwroot/dist`, Umbraco runtime data + SQLite DB files, IDE/VCS, all markdown
-  (incl. `context.md`), Dockerfiles/compose.
+  (incl. `context.md`), Dockerfiles/compose, and `deploy/` (runner infra).
 - `.gitignore` (root + `SvConcatWeb/.gitignore`) — standard .NET/Umbraco ignores;
   runtime `umbraco/Data`, media, and `wwwroot/dist` are not committed.
 - `README.md` — one line ("Studievereniging concat website V3").

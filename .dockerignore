@@ -16,6 +16,9 @@ SvConcatWeb/wwwroot/dist/
 SvConcatWeb/umbraco/Data/
 SvConcatWeb/umbraco/Logs/
 SvConcatWeb/wwwroot/media/
+# Local bind-mount targets used instead of named volumes during dev.
+umbraco-data/
+umbraco-media/
 **/*.sqlite.db
 **/*.sqlite.db-shm
 **/*.sqlite.db-wal
@@ -33,6 +36,8 @@ SvConcatWeb/wwwroot/media/
 Dockerfile
 .dockerignore
 docker-compose*.yml
+# CI runner infra — deployed by hand on the services VM, never part of the app.
+deploy/
 context.md
 **/*.md
 

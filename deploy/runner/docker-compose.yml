@@ -1,0 +1,35 @@
+# GitHub Actions runner for the Deploy workflow. Runs on the services VM as a
+# container — nothing is installed on the host itself.
+#
+# Deploy via Portainer: Stacks -> Add stack -> Web editor, paste this file, then
+# add ONE environment variable (Portainer has no .env file to read):
+#   RUNNER_ACCESS_TOKEN = classic PAT with "repo" scope
+# Optionally override REPO_URL. Then Deploy the stack and wait for the runner to
+# appear as Idle under the repo's Settings -> Actions -> Runners.
+services:
+  runner:
+    image: myoung34/github-runner:latest
+    container_name: svconcat-runner
+    restart: unless-stopped
+    environment:
+      RUNNER_SCOPE: repo
+      REPO_URL: ${REPO_URL:-https://github.com/MaxiveLegend/svconcat-web}
+      RUNNER_NAME: svconcat-deploy-runner
+      # The workflow selects on this label; "self-hosted" is added by GitHub.
+      # A single runner serves every environment because it only drives docker
+      # compose on the app VMs over SSH.
+      LABELS: deploy-runner
+      RUNNER_WORKDIR: /_work
+      # Used only to (re)register the runner when the container starts;
+      # registration tokens expire, a PAT survives restarts.
+      ACCESS_TOKEN: ${RUNNER_ACCESS_TOKEN:?add RUNNER_ACCESS_TOKEN as a stack environment variable in Portainer}
+      # Pin behaviour to the image tag rather than self-updating in place.
+      DISABLE_AUTO_UPDATE: "true"
+    # Deliberately NO /var/run/docker.sock mount: every docker command runs on
+    # the app VMs over SSH, so the runner needs no engine access here. Mounting
+    # the socket would make any job root on the services VM.
+    volumes:
+      - runner-work:/_work
+
+volumes:
+  runner-work:

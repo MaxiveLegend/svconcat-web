@@ -26,6 +26,10 @@
     <Folder Include="Views\Partials\richtext\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="umbraco\models\ood.flag" />
+  </ItemGroup>
+
   <PropertyGroup>
     <!-- Razor files are needed for the backoffice to work correctly -->
     <CopyRazorGenerateFilesToPublishDirectory>true</CopyRazorGenerateFilesToPublishDirectory>

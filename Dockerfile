@@ -61,8 +61,9 @@ COPY --from=build /app/publish ./
 
 # Persisted at runtime via volumes (see docker-compose.yml):
 #   - umbraco/Data  -> SQLite database, Examine indexes, NuCache, TEMP
+#   - umbraco/Logs  -> Serilog trace logs
 #   - wwwroot/media -> uploaded media
-RUN mkdir -p /app/umbraco/Data /app/wwwroot/media
+RUN mkdir -p /app/umbraco/Data /app/umbraco/Logs /app/wwwroot/media
 
 EXPOSE 8080
 
